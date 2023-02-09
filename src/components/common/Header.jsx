@@ -6,6 +6,7 @@ export default function Header() {
     <header>
       <nav>
         <Link to="/map">map</Link>
+        <Link to="/post">post</Link>
       </nav>
     </header>
   );

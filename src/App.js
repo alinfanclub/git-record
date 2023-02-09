@@ -3,6 +3,7 @@ import Home from "./page/Home";
 import MapPage from "./page/MapPage";
 import NotFound from "./page/NotFound";
 import Root from "./page/Root";
+import WritePost from "./page/WritePost";
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
       {
         path: "/map",
         element: <MapPage />,
+      },
+      {
+        path: "/post",
+        element: <WritePost />,
       },
     ],
   },

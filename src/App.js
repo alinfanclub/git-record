@@ -17,7 +17,7 @@ const router = createBrowserRouter([
         element: <MapPage />,
       },
       {
-        path: "/post",
+        path: "/post/new",
         element: <WritePost />,
       },
     ],

@@ -10,9 +10,13 @@
 }
 body {
   @apply w-full flex  flex-col items-center;
+  font-family: "Noto Sans KR", sans-serif;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+.toastui-editor-contents img {
+  max-height: 500px !important;
 }

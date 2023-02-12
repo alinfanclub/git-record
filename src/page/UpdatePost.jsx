@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Editor } from "@toast-ui/react-editor";
 import "@toast-ui/editor/dist/toastui-editor.css";
 import "@toast-ui/editor/dist/i18n/ko-kr";
@@ -6,32 +6,42 @@ import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
 import "tui-color-picker/dist/tui-color-picker.css";
 import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
 import { uploadImage } from "../api/UploadImage";
-import { addPost } from "../api/firebase";
+import { updatePost } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
-import { v4 as uuid } from "uuid";
-import { useNavigate } from "react-router-dom";
-import "./EditorBlock.module.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
-export default function EditorBlock() {
+export default function UpdatePost() {
   const [text, setText] = useState("");
   const [postInfo, setPostInfo] = useState();
   const [isUploading, setIsUploading] = useState(false);
-  const postId = uuid();
   const { user } = useAuthContext();
   const navigate = useNavigate();
 
   const editorRef = useRef();
+
+  const {
+    state: { post },
+  } = useLocation();
+
+  useEffect(() => {
+    setPostInfo(post);
+    setText(post.text);
+  }, []);
+
+  // 에디터 덱스트
   const onChange = () => {
     const data = editorRef.current.getInstance().getHTML();
     setText(data);
     console.log(text);
   };
 
+  // 타이틀, 타입
   const handleChange = (e) => {
     const { name, value } = e.target;
     setPostInfo((item) => ({ ...item, [name]: value }));
   };
 
+  // 이미지 업로드
   const onUploadImage = async (blob, callback) => {
     console.log(blob);
     uploadImage(blob).then((data) => {
@@ -40,14 +50,17 @@ export default function EditorBlock() {
     });
     // return false;
   };
-  const sendPost = (e) => {
+
+  // 수정하기
+  const upDate = (e) => {
     e.preventDefault();
     if (text === "") {
       alert("본문을 입력해주세요.");
       return false;
     } else {
       setIsUploading(true);
-      addPost(text, user, postInfo, postId).finally(() => {
+      const postId = post.id;
+      updatePost(text, user, postInfo, postId).finally(() => {
         setIsUploading(false);
         navigate(`/`);
       });
@@ -55,7 +68,7 @@ export default function EditorBlock() {
   };
   return (
     <>
-      <form onSubmit={sendPost}>
+      <form onSubmit={upDate}>
         <input
           type="text"
           id="title"
@@ -63,6 +76,7 @@ export default function EditorBlock() {
           placeholder="제목을 입력해주세요"
           onChange={handleChange}
           name="title"
+          value={postInfo ? postInfo.title : post.title}
           required
         ></input>
         <input
@@ -72,15 +86,17 @@ export default function EditorBlock() {
           placeholder="작가를 입력해주세요"
           onChange={handleChange}
           name="author"
+          value={postInfo ? postInfo.author : post.author}
           required
         ></input>
         <select
           name="type"
           onChange={handleChange}
           className="p-4 outline-none border border-gray-300 my-1 w-full"
+          value={postInfo ? postInfo.type : post.type}
           required
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             선택하세요
           </option>
           <option value="추천 시">추천 시</option>
@@ -88,7 +104,7 @@ export default function EditorBlock() {
           <option value="부스러기">부스러기</option>
         </select>
         <Editor
-          initialValue=""
+          initialValue={post.text}
           previewStyle="vertical"
           height="500px"
           initialEditType="wysiwyg"

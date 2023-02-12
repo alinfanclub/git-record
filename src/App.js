@@ -1,8 +1,10 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Home from "./page/Home";
+import Home from "./components/PostList";
 import MapPage from "./page/MapPage";
 import NotFound from "./page/NotFound";
+import PostDetail from "./page/PostDetail";
 import Root from "./page/Root";
+import UpdatePost from "./page/UpdatePost";
 import WritePost from "./page/WritePost";
 
 const router = createBrowserRouter([
@@ -19,6 +21,14 @@ const router = createBrowserRouter([
       {
         path: "/post/new",
         element: <WritePost />,
+      },
+      {
+        path: "/post/:postId",
+        element: <PostDetail />,
+      },
+      {
+        path: "/post/update/:postId",
+        element: <UpdatePost />,
       },
     ],
   },

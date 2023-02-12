@@ -6,8 +6,15 @@ import {
   signOut,
   onAuthStateChanged,
 } from "firebase/auth";
-import { getDatabase, ref, get, set } from "firebase/database";
-import { v4 as uuid } from "uuid";
+import {
+  getDatabase,
+  ref,
+  get,
+  set,
+  serverTimestamp,
+  remove,
+} from "firebase/database";
+// import { v4 as uuid } from "uuid";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -53,8 +60,8 @@ async function adminUser(user) {
       return user;
     });
 }
-export async function getProductsData() {
-  return get(ref(database, "products")) //
+export async function getPostData() {
+  return get(ref(database, "post")) //
     .then((snapshot) => {
       if (snapshot.exists()) {
         return Object.values(snapshot.val());
@@ -62,13 +69,41 @@ export async function getProductsData() {
       return [];
     });
 }
-export async function addewProduct(product, image) {
-  const id = uuid();
-  return set(ref(database, `products/${id}`), {
-    ...product,
+export async function addPost(text, user, postInfo, id) {
+  return set(ref(database, `post/${id}`), {
+    ...postInfo,
+    text,
     id,
-    price: parseInt(product.price),
-    image,
-    options: product.options.split(","),
+    createdAt: serverTimestamp(),
+    userInfo: {
+      userUid: user.uid,
+      userName: user.displayName,
+      userProfile: user.photoURL,
+    },
   });
 }
+export async function updatePost(text, user, postInfo, id) {
+  return set(ref(database, `post/${id}`), {
+    ...postInfo,
+    text,
+    id,
+    createdAt: serverTimestamp(),
+    userInfo: {
+      userUid: user.uid,
+      userName: user.displayName,
+      userProfile: user.photoURL,
+    },
+  });
+}
+export async function removePost(fuck) {
+  remove(ref(database, `post/${fuck}`));
+}
+//  ! 포스트의 아이디를 넣어줘서 찾고 업데이트 하도록 id를 포스트 id를 받아오도록 네이밍 수정 및 연결
+// export async function updateProduct(product, image) {
+//   return update(ref(database, `products/${id}`), {
+//     ...product,
+//     price: parseInt(product.price),
+//     image,
+//     options: product.options.split(","),
+//   });
+// }

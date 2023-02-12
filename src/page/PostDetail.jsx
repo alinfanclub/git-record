@@ -6,6 +6,7 @@ import "./PostDetail.module.css";
 import { AiFillDelete } from "react-icons/ai";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
 import { removePost } from "../api/firebase";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function PostDetail() {
   const {
@@ -13,6 +14,7 @@ export default function PostDetail() {
   } = useLocation();
   console.log(post);
 
+  const { user } = useAuthContext();
   const navigate = useNavigate();
 
   const date = new Date(post.createdAt);
@@ -24,15 +26,23 @@ export default function PostDetail() {
   const createdAtSimple = `${year}-${month}-${day} ${hour}:${minutes}`;
 
   const deletePost = () => {
-    if (window.confirm("삭제 하시겠나요?")) {
-      removePost(post.id).finally(() => {
-        navigate(`/`);
-      });
+    if (post.userInfo.userUid === user.uid) {
+      if (window.confirm("삭제 하시겠나요?")) {
+        removePost(post.id).finally(() => {
+          navigate(`/`);
+        });
+      }
+    } else {
+      alert("권한이 없습니다.");
     }
   };
 
   const gotoUpdate = () => {
-    navigate(`/post/update/${post.id}`, { state: { post } });
+    if (post.userInfo.userUid === user.uid) {
+      navigate(`/post/update/${post.id}`, { state: { post } });
+    } else {
+      alert("권한이 없습니다.");
+    }
   };
   return (
     <div className="w-11/12 2xl:w-2/5 my-0 mx-auto">

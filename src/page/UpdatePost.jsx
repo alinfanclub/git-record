@@ -54,16 +54,20 @@ export default function UpdatePost() {
   // 수정하기
   const upDate = (e) => {
     e.preventDefault();
-    if (text === "") {
-      alert("본문을 입력해주세요.");
-      return false;
+    if (post.userInfo.userUid === user.uid) {
+      if (text === "") {
+        alert("본문을 입력해주세요.");
+        return false;
+      } else {
+        setIsUploading(true);
+        const postId = post.id;
+        updatePost(text, user, postInfo, postId).finally(() => {
+          setIsUploading(false);
+          navigate(`/`);
+        });
+      }
     } else {
-      setIsUploading(true);
-      const postId = post.id;
-      updatePost(text, user, postInfo, postId).finally(() => {
-        setIsUploading(false);
-        navigate(`/`);
-      });
+      alert("권한이 없습니다.");
     }
   };
   return (

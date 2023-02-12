@@ -26,7 +26,7 @@ export default function UpdatePost() {
   useEffect(() => {
     setPostInfo(post);
     setText(post.text);
-  }, []);
+  }, [post]);
 
   // 에디터 덱스트
   const onChange = () => {

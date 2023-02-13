@@ -8,6 +8,7 @@ export default function PostList() {
     error,
     data: post,
   } = useQuery({ queryKey: ["post"], queryFn: getPostData });
+
   console.log(post);
   return (
     <div className="p-4 flex gap-10 flex-col">

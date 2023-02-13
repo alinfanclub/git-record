@@ -63,7 +63,7 @@ export default function UpdatePost() {
         const postId = post.id;
         updatePost(text, user, postInfo, postId).finally(() => {
           setIsUploading(false);
-          navigate(`/`);
+          navigate(`/post/${postId}`);
         });
       }
     } else {

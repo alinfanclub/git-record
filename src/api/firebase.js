@@ -48,8 +48,6 @@ export function onUserStateChange(callback) {
 }
 
 async function adminUser(user) {
-  // 2. 사용자가 어드민 권한을 가지고 있는지 확인
-  // 3. {...usr, isAdmin: true/false}
   return get(ref(database, "admins")) //
     .then((snapshot) => {
       if (snapshot.exists()) {
@@ -67,6 +65,12 @@ export async function getPostData() {
         return Object.values(snapshot.val());
       }
       return [];
+    });
+}
+export async function getPostDataDetail(id) {
+  return get(ref(database, `post/${id}`)) //
+    .then((snapshot) => {
+      return Object(snapshot.val());
     });
 }
 export async function addPost(text, user, postInfo, id) {

@@ -49,7 +49,7 @@ export default function EditorBlock() {
       setIsUploading(true);
       addPost(text, user, postInfo, postId).finally(() => {
         setIsUploading(false);
-        navigate(`/`);
+        navigate(`/post/${postId}`);
       });
     }
   };
@@ -110,7 +110,7 @@ export default function EditorBlock() {
             <div className="text-white">is Loading...</div>
           </div>
         )}
-        <button>button</button>
+        <button className="w-full bg-blue-300">button</button>
       </form>
     </>
   );

@@ -20,3 +20,6 @@ code {
 .toastui-editor-contents img {
   max-height: 500px !important;
 }
+.popup_text {
+  gap: 1vw;
+}

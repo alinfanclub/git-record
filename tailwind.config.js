@@ -12,6 +12,10 @@ module.exports = {
       maxWidth: {
         "1/2": "50%",
       },
+      fontSize: {
+        sm: "1vw",
+        base: "2vw",
+      },
     },
   },
 };

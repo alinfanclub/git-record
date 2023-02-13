@@ -3,8 +3,8 @@ import PostList from "../components/PostList";
 
 export default function Home() {
   return (
-    <div>
+    <main>
       <PostList />
-    </div>
+    </main>
   );
 }

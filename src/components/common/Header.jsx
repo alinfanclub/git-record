@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
@@ -8,18 +8,41 @@ import { BsPencilSquare } from "react-icons/bs";
 
 export default function Header() {
   const { user, login, logout } = useAuthContext();
+  const [side, setSide] = useState(false);
+  const sideToggle = () => {
+    setSide(!side);
+  };
   return (
-    <header className="w-full flex justify-between border-b border-gray-300 p-2 items-center">
-      <Link to={"/"}><img src="../../img/logo.png" /></Link>
+    <header className="w-full flex justify-between border-b border-gray-300 p-2 items-center sticky top-0 bg-white mb-4">
+      <Link to={"/"}>
+        <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo" />
+      </Link>
       <div className="flex items-center">
         {user && (
-          <Link to="/post/new" className="mr-5">
+          <Link to="/post/new" className="mr-5 hidden sm:block">
             <BsPencilSquare className="text-2xl" />
           </Link>
         )}
-        {user && <UserProfile user={user} />}
+        {user && (
+          <div className="relartive" onClick={sideToggle}>
+            <UserProfile user={user} />
+            {side && (
+              <div className="block sm:hidden absolute top-16 bg-white border border-grey py-5 px-10 right-4">
+                <div className="flex gap-4 items-center flex-col">
+                  <Link to="/post/new" className="">
+                    <BsPencilSquare className="text-2xl" />
+                  </Link>
+                  <LoginButton text={"logout"} onClick={logout} />
+                  {/* 개인화면 정보 이동하는 기능 만들기 */}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
         {!user && <LoginButton text={"login"} onClick={login} />}
-        {user && <LoginButton text={"logout"} onClick={logout} />}
+        <div className="hidden sm:block">
+          {user && <LoginButton text={"logout"} onClick={logout} />}
+        </div>
       </div>
     </header>
   );

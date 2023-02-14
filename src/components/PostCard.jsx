@@ -19,12 +19,12 @@ export default function PostCard({
         <small>{type ? type : "미분류"}</small>
         <small>{formatAgo(createdAt, "ko")}</small>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4 ml-auto">
         <p>{userInfo.userName}</p>
         <img
           src={userInfo.userProfile}
           alt={userInfo.displayName}
-          className="w-10 h-10 rounded-full mr-2"
+          className="w-10 h-10 rounded-full"
         />
       </div>
     </li>

@@ -11,6 +11,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { v4 as uuid } from "uuid";
 import { useNavigate } from "react-router-dom";
 import "./EditorBlock.module.css";
+import SubmitButton from "./SubmitButton";
 
 export default function EditorBlock() {
   const [text, setText] = useState("");
@@ -68,8 +69,8 @@ export default function EditorBlock() {
         <input
           type="text"
           id="author"
-          className="p-4 outline-none border border-gray-300 my-1 w-full"
-          placeholder="작가를 입력해주세요"
+          className="p-4 outline-none border border-gray-300 my-1 w-full text-sm sm:text-lg"
+          placeholder={`작가(혹은 본인)를(을) 입력해주세요 ex)${user.displayName}`}
           onChange={handleChange}
           name="author"
           required
@@ -110,7 +111,9 @@ export default function EditorBlock() {
             <div className="text-white">is Loading...</div>
           </div>
         )}
-        <button className="w-full bg-blue-300">button</button>
+        <div className="mt-4 flex">
+          <SubmitButton text="글 작성" />
+        </div>
       </form>
     </>
   );

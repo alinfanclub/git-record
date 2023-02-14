@@ -9,6 +9,7 @@ import { uploadImage } from "../api/UploadImage";
 import { updatePost } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
+import SubmitButton from "../components/SubmitButton";
 
 export default function UpdatePost() {
   const [text, setText] = useState("");
@@ -72,7 +73,7 @@ export default function UpdatePost() {
   };
   return (
     <>
-      <form onSubmit={upDate}>
+      <form onSubmit={upDate} className="w-11/12 mx-auto">
         <input
           type="text"
           id="title"
@@ -130,7 +131,9 @@ export default function UpdatePost() {
             <div className="text-white">is Loading...</div>
           </div>
         )}
-        <button>button</button>
+        <div className="mt-4 flex">
+          <SubmitButton text="글 작성" />
+        </div>
       </form>
     </>
   );

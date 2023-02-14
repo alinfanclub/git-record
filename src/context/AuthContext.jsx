@@ -8,9 +8,8 @@ export function AuthContextProvier({ children }) {
   const [user, setUser] = useState("");
   useEffect((user) => {
     onUserStateChange((user) => {
-      console.log(user);
+      // console.log(user);
       setUser(user);
-      console.log(user);
     });
   }, []);
   return (

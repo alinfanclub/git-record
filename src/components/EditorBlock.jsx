@@ -26,7 +26,6 @@ export default function EditorBlock() {
   const onChange = () => {
     const data = editorRef.current.getInstance().getHTML();
     setText(data);
-    console.log(text);
   };
 
   const handleChange = (e) => {
@@ -35,10 +34,11 @@ export default function EditorBlock() {
   };
 
   const onUploadImage = async (blob, callback) => {
-    console.log(blob);
+    setIsUploading(true);
     uploadImage(blob).then((data) => {
       const { url } = data;
       callback(url, "");
+      setIsUploading(false);
     });
     // return false;
   };
@@ -61,7 +61,7 @@ export default function EditorBlock() {
         <input
           type="text"
           id="title"
-          className="p-4 outline-none border border-gray-300 my-1 w-full"
+          className="p-4 outline-none border border-gray-300 my-1 w-full sm:text-lg"
           placeholder="제목을 입력해주세요"
           onChange={handleChange}
           name="title"
@@ -70,7 +70,7 @@ export default function EditorBlock() {
         <input
           type="text"
           id="author"
-          className="p-4 outline-none border border-gray-300 my-1 w-full text-sm sm:text-lg"
+          className="p-4 outline-none border border-gray-300 my-1 w-full text-xs sm:text-lg"
           placeholder={`작가(혹은 본인)를(을) 입력해주세요 ex)${user.displayName}`}
           onChange={handleChange}
           name="author"

@@ -45,10 +45,11 @@ export default function UpdatePost() {
 
   // 이미지 업로드
   const onUploadImage = async (blob, callback) => {
-    console.log(blob);
+    setIsUploading(true);
     uploadImage(blob).then((data) => {
       const { url } = data;
       callback(url, "");
+      setIsUploading(false);
     });
     // return false;
   };
@@ -78,7 +79,7 @@ export default function UpdatePost() {
         <input
           type="text"
           id="title"
-          className="p-4 outline-none border border-gray-300 my-1 w-full"
+          className="p-4 outline-none border border-gray-300 my-1 w-full sm:text-lg"
           placeholder="제목을 입력해주세요"
           onChange={handleChange}
           name="title"
@@ -88,8 +89,8 @@ export default function UpdatePost() {
         <input
           type="text"
           id="author"
-          className="p-4 outline-none border border-gray-300 my-1 w-full"
-          placeholder="작가를 입력해주세요"
+          className="p-4 outline-none border border-gray-300 my-1 w-full sm:text-lg"
+          placeholder={`작가(혹은 본인)를(을) 입력해주세요 ex)${user.displayName}`}
           onChange={handleChange}
           name="author"
           value={postInfo ? postInfo.author : post.author}

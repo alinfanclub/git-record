@@ -15,7 +15,6 @@ export default function PostList() {
 
   const COOKIE_KEY = "yaerHideModal";
   const [cookie, setCookie] = useCookies([COOKIE_KEY]);
-  console.log(post);
 
   const closeModal = () => {
     const decade = moment();

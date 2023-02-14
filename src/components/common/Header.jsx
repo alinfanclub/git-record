@@ -10,7 +10,7 @@ export default function Header() {
   const { user, login, logout } = useAuthContext();
   return (
     <header className="w-full flex justify-between border-b border-gray-300 p-2 items-center">
-      <Link to={"/"}>booseureogi</Link>
+      <Link to={"/"}><img src="../../img/logo.png" /></Link>
       <div className="flex items-center">
         {user && user.isAdmin && (
           <Link to="/post/new" className="mr-5">

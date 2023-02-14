@@ -12,7 +12,7 @@ export default function Header() {
     <header className="w-full flex justify-between border-b border-gray-300 p-2 items-center">
       <Link to={"/"}><img src="../../img/logo.png" /></Link>
       <div className="flex items-center">
-        {user && user.isAdmin && (
+        {user && (
           <Link to="/post/new" className="mr-5">
             <BsPencilSquare className="text-2xl" />
           </Link>

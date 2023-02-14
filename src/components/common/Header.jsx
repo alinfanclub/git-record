@@ -13,7 +13,7 @@ export default function Header() {
     setSide(!side);
   };
   return (
-    <header className="w-full flex justify-between border-b border-gray-300 p-2 items-center sticky top-0 bg-white mb-4 z-60">
+    <header className="w-full flex justify-between border-b border-gray-300 p-2 items-center sticky top-0 bg-white mb-4 z-50">
       <Link to={"/"}>
         <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo" />
       </Link>

@@ -7,6 +7,7 @@ import { AiFillDelete } from "react-icons/ai";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
 import { getPostDataDetail, removePost } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
+import Spinner from "../components/Spinner";
 
 export default function PostDetail() {
   // const {
@@ -68,11 +69,7 @@ export default function PostDetail() {
   };
   return (
     <>
-      {!post && (
-        <div className="fixed top-0 left-0 w-full h-full flex items-center justify-center bg-black/50 text-white text-4xl">
-          Loading
-        </div>
-      )}
+      {!post && <Spinner />}
       <div className="w-11/12 2xl:w-2/5 my-0 mx-auto">
         <div className="mb-4 py-4">
           <div className="flex items-center justify-between">
@@ -80,7 +77,7 @@ export default function PostDetail() {
               <img
                 src={post && post.userInfo.userProfile}
                 alt={post && post.userInfo.userName}
-                className="w-10 h-10 rounded-full mr-2"
+                className="w-10 h-10 rounded-full mr-2 bg-white"
               />
               <div>
                 <p className="mr-2">{post && post.userInfo.userName}</p>

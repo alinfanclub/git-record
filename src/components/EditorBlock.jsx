@@ -12,6 +12,7 @@ import { v4 as uuid } from "uuid";
 import { useNavigate } from "react-router-dom";
 import "./EditorBlock.module.css";
 import SubmitButton from "./SubmitButton";
+import Spinner from "./Spinner";
 
 export default function EditorBlock() {
   const [text, setText] = useState("");
@@ -106,11 +107,7 @@ export default function EditorBlock() {
           extendedAutolinks={true}
           autofocus={false}
         />
-        {isUploading && (
-          <div className="w-screen h-screen bg-black/50 fixed top-0 left-0 z-20 flex items-center justify-center">
-            <div className="text-white">is Loading...</div>
-          </div>
-        )}
+        {isUploading && <Spinner />}
         <div className="mt-4 flex">
           <SubmitButton text="글 작성" />
         </div>

@@ -4,6 +4,7 @@ import PostCard from "./PostCard";
 import { useCookies } from "react-cookie";
 import moment from "moment";
 import { AiFillCloseCircle } from "react-icons/ai";
+import Spinner from "./Spinner";
 
 export default function PostList() {
   const {
@@ -26,7 +27,7 @@ export default function PostList() {
   };
   return (
     <main className="p-4 flex gap-10 flex-col">
-      {isLoading && <p>loading</p>}
+      {isLoading && <Spinner />}
       {error && <p>error!</p>}
       <div className="">
         <div className="mb-4">창작 시</div>

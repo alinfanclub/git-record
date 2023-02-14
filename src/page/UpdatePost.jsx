@@ -10,6 +10,7 @@ import { updatePost } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import SubmitButton from "../components/SubmitButton";
+import Spinner from "../components/Spinner";
 
 export default function UpdatePost() {
   const [text, setText] = useState("");
@@ -128,7 +129,7 @@ export default function UpdatePost() {
         />
         {isUploading && (
           <div className="w-screen h-screen bg-black/50 fixed top-0 left-0 z-20 flex items-center justify-center">
-            <div className="text-white">is Loading...</div>
+            <Spinner />
           </div>
         )}
         <div className="mt-4 flex">

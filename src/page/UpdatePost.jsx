@@ -75,7 +75,7 @@ export default function UpdatePost() {
   };
   return (
     <>
-      <form onSubmit={upDate} className="w-11/12 mx-auto">
+      <form onSubmit={upDate} className="w-11/12 mx-auto min-h-screen">
         <input
           type="text"
           id="title"

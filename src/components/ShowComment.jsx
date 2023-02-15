@@ -1,6 +1,7 @@
 import { Viewer } from "@toast-ui/react-editor";
 import React from "react";
 import { deleteComments } from "../api/firebase";
+import { AiFillDelete } from "react-icons/ai";
 
 export default function ShowComment({
   commentData,
@@ -25,7 +26,7 @@ export default function ShowComment({
           />
         </div>
         <div className="" onClick={deleteComment}>
-          버튼
+          <AiFillDelete />
         </div>
       </div>
       <div className="">

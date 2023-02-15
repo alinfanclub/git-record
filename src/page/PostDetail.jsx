@@ -11,7 +11,6 @@ import Spinner from "../components/Spinner";
 import CommentCreate from "../components/CommentCreate";
 // import ShowComment from "../components/ShowComment";
 import Comments from "../components/Comments";
-import { useQuery } from "@tanstack/react-query";
 // import { useQuery } from "@tanstack/react-query";
 
 export default function PostDetail() {
@@ -24,28 +23,38 @@ export default function PostDetail() {
   const navigate = useNavigate();
 
   const param = useParams().postId;
-  // const [post, setPost] = useState();
+  const [post, setPost] = useState();
   const [time, setTime] = useState();
 
-  const { isLoading, data: post } = useQuery(
-    ["postt"],
-    async () => await getPostDataDetail(param)
-  );
+  // const {
+  //   isLoading,
+  //   error,
+  //   data: post,
+  // } = useQuery(["post"], async () => await getPostDataDetail(param));
 
   useEffect(() => {
-    if (post) {
-      const date = new Date(post.createdAt);
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-      const hour = String(date.getHours()).padStart("2", 0);
-      const minutes = String(date.getMinutes()).padStart("2", 0);
-      const createdAtSimple = `${year}-${month}-${day} ${hour}:${minutes}`;
-      setTime(createdAtSimple);
-    }
-  }, [post]);
+    getPostDataDetail(param)
+      .then((res) => {
+        return setPost(res);
+      })
+      .then(() => {
+        if (post) {
+          const date = new Date(post.createdAt);
+          const year = date.getFullYear();
+          const month = date.getMonth() + 1;
+          const day = date.getDate();
+          const hour = String(date.getHours()).padStart("2", 0);
+          const minutes = String(date.getMinutes()).padStart("2", 0);
+          const createdAtSimple = `${year}-${month}-${day} ${hour}:${minutes}`;
+          setTime(createdAtSimple);
+        }
+      });
+    // console.log(post);
+  }, [param]);
 
   console.log(post);
+
+  console.log(1);
 
   const deletePost = () => {
     if (post.userInfo.userUid === user.uid) {
@@ -68,7 +77,7 @@ export default function PostDetail() {
   };
   return (
     <>
-      {isLoading && <Spinner />}
+      {!post && <Spinner />}
       <div className="w-11/12 2xl:w-2/5 my-0 mx-auto min-h-screen sm:min-h-full mb-10">
         <div className="mb-4 py-4">
           <div className="flex items-center justify-between">

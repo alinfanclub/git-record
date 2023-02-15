@@ -11,7 +11,7 @@ export default function PostCard({
     <li
       className="flex items-centr flex-col sm:flex-row justify-between border-b border-t border-gray-300 p-4 cursor-pointer"
       onClick={() => {
-        navigate(`/post/${id}`, { state: { post } });
+        navigate(`/post/${id}`);
       }}
     >
       <div className="flex items-center gap-4 mb-4 sm:mb-0">

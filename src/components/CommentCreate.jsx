@@ -49,7 +49,7 @@ export default function CommentCreate() {
   const sendComment = (e) => {
     e.preventDefault();
     if (comment === "") {
-      alert("본문을 입력해주세요.");
+      alert("댓글을 입력해주세요.");
       return false;
     } else {
       setIsUploading(true);
@@ -58,6 +58,7 @@ export default function CommentCreate() {
         {
           onSuccess: () => {
             setIsUploading(false);
+            editorRef.current.getInstance().setHTML("");
             // navigate(`/post/${postId}`);
           },
         }

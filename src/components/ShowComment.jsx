@@ -2,15 +2,25 @@ import { Viewer } from "@toast-ui/react-editor";
 import React from "react";
 import { deleteComments } from "../api/firebase";
 import { AiFillDelete } from "react-icons/ai";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function ShowComment({
   commentData,
   commentData: { comment, userInfo, commentId },
   param,
 }) {
+  const queryClient = useQueryClient();
+
+  const removeComment = useMutation(
+    ({ param, commentId }) => deleteComments(param, commentId),
+    {
+      onSuccess: () => queryClient.invalidateQueries(["comments"]),
+    }
+  );
   const deleteComment = () => {
     if (window.confirm("정말 삭제하시나요?")) {
-      deleteComments(param, commentId).then(() => {});
+      removeComment.mutate({ param, commentId }, { onSuccess: () => {} });
+      // deleteComments(param, commentId).then(() => {});
     }
   };
 

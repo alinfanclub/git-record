@@ -27,9 +27,30 @@ code {
 @media only screen and (max-width: 480px) {
   .toastui-editor-popup {
     margin-left: 0 !important;
+    z-index: 9999;
   }
   .toastui-editor-dropdown-toolbar {
     flex-wrap: wrap;
     height: fit-content !important;
+  }
+  .toastui-editor-toolbar {
+    position: fixed;
+    top: 0.4rem;
+    right: 4rem;
+    /* top: 50%;
+    right: 1rem;
+    transform: translateY(-50%); */
+    width: 50px;
+    z-index: 999;
+    border: 1px solid #ebedf2;
+  }
+  .toastui-editor-dropdown-toolbar {
+    width: 212px;
+    overflow: hidden;
+  }
+  .toastui-editor-defaultUI-toolbar {
+    padding: 0 0 !important;
+    height: auto;
+    justify-content: center;
   }
 }

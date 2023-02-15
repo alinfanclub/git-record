@@ -24,8 +24,10 @@ export default function PostList() {
       expires: decade.toDate(),
     });
   };
+  console.log(post);
+  console.log(1);
   return (
-    <main className="p-4 flex gap-10 flex-col">
+    <section className="p-4 flex gap-10 flex-col mx-auto">
       {isLoading && <Spinner />}
       {error && <p>error!</p>}
       <div className="">
@@ -78,6 +80,6 @@ export default function PostList() {
           </div>
         </div>
       )}
-    </main>
+    </section>
   );
 }

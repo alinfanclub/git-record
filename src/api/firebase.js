@@ -1,4 +1,5 @@
 import { initializeApp } from "firebase/app";
+import { v4 as uuid } from "uuid";
 import {
   getAuth,
   signInWithPopup,
@@ -102,12 +103,43 @@ export async function updatePost(text, user, postInfo, id) {
 export async function removePost(fuck) {
   remove(ref(database, `post/${fuck}`));
 }
-//  ! 포스트의 아이디를 넣어줘서 찾고 업데이트 하도록 id를 포스트 id를 받아오도록 네이밍 수정 및 연결
-// export async function updateProduct(product, image) {
-//   return update(ref(database, `products/${id}`), {
-//     ...product,
-//     price: parseInt(product.price),
-//     image,
-//     options: product.options.split(","),
-//   });
-// }
+
+// ~ 댓글 기능 개발
+
+// ~ 댓글 작성
+export async function addComment(comment, user, postId) {
+  const randomId = uuid();
+  return set(ref(database, `post/${postId}/comments/${randomId}`), {
+    comment,
+    postId,
+    commentId: randomId,
+    createdAt: serverTimestamp(),
+    userInfo: {
+      userUid: user.uid,
+      userName: user.displayName,
+      userProfile: user.photoURL,
+    },
+  });
+}
+
+// ~ 특정 게시글 댓글 불러오기
+export async function getComments(Postid) {
+  return get(ref(database, `post/${Postid}/comments`)) //
+    .then((snapshot) => {
+      const comment = snapshot.val() || {};
+      return Object.values(comment);
+    });
+}
+// ~ 게시글 수정하기
+// TODO 구현 안하고 무조건 삭제 하게끔 할지 고민 필요
+export async function updateComment(comment, user, postId, commnetId) {
+  return set(ref(database, `post/${postId}/comments/${commnetId}`), {
+    comment,
+    createdAt: serverTimestamp(),
+  });
+}
+
+// ~ 게시글 삭제하기
+export async function deleteComments(postId, commentId) {
+  remove(ref(database, `post/${postId}/comments/${commentId}`));
+}

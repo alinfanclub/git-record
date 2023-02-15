@@ -33,24 +33,24 @@ export default function PostDetail() {
   // } = useQuery(["post"], async () => await getPostDataDetail(param));
 
   useEffect(() => {
-    getPostDataDetail(param)
-      .then((res) => {
-        return setPost(res);
-      })
-      .then(() => {
-        if (post) {
-          const date = new Date(post.createdAt);
-          const year = date.getFullYear();
-          const month = date.getMonth() + 1;
-          const day = date.getDate();
-          const hour = String(date.getHours()).padStart("2", 0);
-          const minutes = String(date.getMinutes()).padStart("2", 0);
-          const createdAtSimple = `${year}-${month}-${day} ${hour}:${minutes}`;
-          setTime(createdAtSimple);
-        }
-      });
-    // console.log(post);
+    getPostDataDetail(param).then((res) => {
+      return setPost(res);
+    });
   }, [param]);
+
+  useEffect(() => {
+    if (post) {
+      const date = new Date(post.createdAt);
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1;
+      const day = date.getDate();
+      const hour = String(date.getHours()).padStart("2", 0);
+      const minutes = String(date.getMinutes()).padStart("2", 0);
+      const createdAtSimple = `${year}-${month}-${day} ${hour}:${minutes}`;
+      setTime(createdAtSimple);
+    }
+    console.log(post);
+  }, [post]);
 
   console.log(post);
 

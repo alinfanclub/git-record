@@ -7,7 +7,7 @@ import ShowComment from "./ShowComment";
 export default function Comments() {
   const param = useParams().postId;
   const { data: comments } = useQuery(["comments"], () => getComments(param));
-  console.log(comments);
+  // console.log(comments);
   return (
     <>
       {comments && (
@@ -18,7 +18,7 @@ export default function Comments() {
           <ul id="commentList">
             {comments &&
               comments
-                .sort((a, b) => b.createdAt - a.createdAt)
+                .sort((a, b) => a.createdAt - b.createdAt)
                 .map((obj) => (
                   <ShowComment
                     key={obj.commentId}

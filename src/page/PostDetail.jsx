@@ -49,12 +49,12 @@ export default function PostDetail() {
       const createdAtSimple = `${year}-${month}-${day} ${hour}:${minutes}`;
       setTime(createdAtSimple);
     }
-    console.log(post);
+    // console.log(post);
   }, [post]);
 
-  console.log(post);
+  // console.log(post);
 
-  console.log(1);
+  // console.log(1);
 
   const deletePost = () => {
     if (post.userInfo.userUid === user.uid) {

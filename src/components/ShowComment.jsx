@@ -1,27 +1,46 @@
 import { Viewer } from "@toast-ui/react-editor";
-import React, { useState } from "react";
-import { deleteComments, getSubComments } from "../api/firebase";
+import React, { useEffect, useState } from "react";
+import { deleteComments } from "../api/firebase";
 import { AiFillDelete } from "react-icons/ai";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { BiDownArrow } from "react-icons/bi";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import SubCommentBlock from "./SubCommentBlock";
 import SubCommentShow from "./SubCommentShow";
 
 export default function ShowComment({
   commentData,
-  commentData: { comment, userInfo, commentId },
+  commentData: { comment, userInfo, commentId, subcomments },
   param,
 }) {
   const queryClient = useQueryClient();
-  const [subComment, setSubComment] = useState(false);
-  const { data: subComments } = useQuery(["subComments"], () =>
-    getSubComments(param, commentId)
-  );
+  const [subEditShow, setSubEditShow] = useState(false);
+  const [showAllSubComments, setShowAllSubComments] = useState(true);
+  const [subLenght, setSubLength] = useState();
+
+  const [sub, setSub] = useState();
+  useEffect(() => {
+    if (subcomments) {
+      setSub(Object.values(subcomments));
+    } else {
+      setSub("");
+    }
+  }, [subcomments]);
+
+  useEffect(() => {
+    if (sub) {
+      setSubLength(sub.length);
+    }
+
+    console.log(sub);
+  }, [sub]);
+
   const removeComment = useMutation(
     ({ param, commentId }) => deleteComments(param, commentId),
     {
       onSuccess: () => queryClient.invalidateQueries(["comments"]),
     }
   );
+
   const deleteComment = () => {
     if (window.confirm("정말 삭제하시나요?")) {
       removeComment.mutate({ param, commentId }, { onSuccess: () => {} });
@@ -29,12 +48,17 @@ export default function ShowComment({
     }
   };
 
-  const toggleSubComment = () => {
-    setSubComment(!subComment);
+  const showAllSubCommentsToggle = () => {
+    setShowAllSubComments(!showAllSubComments);
   };
 
+  // ~ 답글 에디터 닫기
+  const toggleSubComment = () => {
+    setSubEditShow(!subEditShow);
+  };
+  // ~ 답글 에디터 작성 후 닫기 프롭 전달
   const hideSub = () => {
-    setSubComment(false);
+    setSubEditShow(false);
   };
 
   return (
@@ -55,24 +79,47 @@ export default function ShowComment({
       <div className="">
         <Viewer initialValue={comment} />
       </div>
-      <button type="button" onClick={toggleSubComment}>
-        답변 작성
-      </button>
-      {subComment && (
-        <div className="">
-          <SubCommentBlock commentId={commentId} hideSub={hideSub} />
+      {/* subCommentArea */}
+      <div className="my-8 pl-4">
+        <div className="flex items-center">
+          <div
+            className="flex items-center gap-4 text-brand cursor-pointer"
+            onClick={showAllSubCommentsToggle}
+          >
+            <div className={showAllSubComments ? "rotate-180" : "rotate-0"}>
+              <BiDownArrow className="text-xs" />
+            </div>
+            <p className="mr-4 text-xs flex items-center">
+              {showAllSubComments
+                ? "댓글 숨기기"
+                : sub
+                ? `총 댓글 : ${subLenght}`
+                : `총 댓글 : 0`}
+            </p>
+          </div>
+          <p className="text-xs cursor-pointer" onClick={toggleSubComment}>
+            답글 달기
+          </p>
         </div>
-      )}
-      {
-        <ul>
-          {subComments &&
-            subComments
-              .sort((a, b) => a.createdAt - b.createdAt)
-              .map((obj) => (
-                <SubCommentShow key={obj.SubCommentId} subComments={obj} />
-              ))}
-        </ul>
-      }
+        <div className="border-l-2 pl-4">
+          {subEditShow && (
+            <div className="">
+              <SubCommentBlock commentId={commentId} hideSub={hideSub} />
+            </div>
+          )}
+          {showAllSubComments && (
+            <div className=" pl-4">
+              {sub && (
+                <SubCommentShow
+                  data={sub}
+                  param={param}
+                  commentId={commentId}
+                />
+              )}
+            </div>
+          )}
+        </div>
+      </div>
     </li>
   );
 }

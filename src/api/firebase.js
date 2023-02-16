@@ -174,3 +174,11 @@ export async function getSubComments(Postid, commentId) {
       return Object.values(comment);
     });
 }
+export async function romoveSubCommentDetail(Postid, commentId, SubCommentId) {
+  return remove(
+    ref(
+      database,
+      `post/${Postid}/comments/${commentId}/subcomments/${SubCommentId}`
+    )
+  );
+}

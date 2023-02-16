@@ -7,7 +7,7 @@ import ShowComment from "./ShowComment";
 export default function Comments() {
   const param = useParams().postId;
   const { data: comments } = useQuery(["comments"], () => getComments(param));
-  console.log(comments);
+  // console.log(comments);
   return (
     <>
       {comments && (

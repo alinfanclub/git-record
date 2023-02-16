@@ -61,7 +61,7 @@ export default function SubCommentBlock({ commentId, hideSub }) {
         </div>
         <div className="flex justify-end gap-4">
           <SubmitButton text="댓글 작성" className="" />
-          <CancleButton text="취소" />
+          <CancleButton text="취소" onClick={hideSub} />
         </div>
       </form>
     </>

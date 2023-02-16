@@ -3,7 +3,7 @@ import SubCommentCard from "./SubCommentCard";
 
 export default function SubCommentShow({ data, param, commentId }) {
   return (
-    <ul>
+    <ul className="border-t-2 my-4">
       {data
         ? data
             .sort((a, b) => a.createdAt - b.createdAt)

@@ -6,6 +6,7 @@ import { BiDownArrow } from "react-icons/bi";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import SubCommentBlock from "./SubCommentBlock";
 import SubCommentShow from "./SubCommentShow";
+import { useAuthContext } from "../context/AuthContext";
 
 export default function ShowComment({
   commentData,
@@ -18,6 +19,7 @@ export default function ShowComment({
   const [subLenght, setSubLength] = useState();
 
   const [sub, setSub] = useState();
+  const { user } = useAuthContext();
   useEffect(() => {
     if (subcomments) {
       setSub(Object.values(subcomments));
@@ -72,31 +74,35 @@ export default function ShowComment({
             className="w-10 h-10 rounded-full mr-2"
           />
         </div>
-        <div className="" onClick={deleteComment}>
-          <AiFillDelete />
-        </div>
+        {user && user.uid === userInfo.userUid && (
+          <div className="" onClick={deleteComment}>
+            <AiFillDelete />
+          </div>
+        )}
       </div>
-      <div className="">
+      <div className="bg-neutral-50 rounded-xl py-10 px-4 my-2">
         <Viewer initialValue={comment} />
       </div>
       {/* subCommentArea */}
       <div className="my-8 pl-4">
         <div className="flex items-center">
-          <div
-            className="flex items-center gap-4 text-brand cursor-pointer"
-            onClick={showAllSubCommentsToggle}
-          >
-            <div className={showAllSubComments ? "rotate-180" : "rotate-0"}>
-              <BiDownArrow className="text-xs" />
+          {subcomments && (
+            <div
+              className="flex items-center gap-4 text-brand cursor-pointer"
+              onClick={showAllSubCommentsToggle}
+            >
+              <div className={showAllSubComments ? "rotate-180" : "rotate-0"}>
+                <BiDownArrow className="text-xs" />
+              </div>
+              <p className="mr-4 text-xs flex items-center">
+                {showAllSubComments
+                  ? "댓글 숨기기"
+                  : sub
+                  ? `총 댓글 : ${subLenght}개 보기`
+                  : `총 댓글 : 0`}
+              </p>
             </div>
-            <p className="mr-4 text-xs flex items-center">
-              {showAllSubComments
-                ? "댓글 숨기기"
-                : sub
-                ? `총 댓글 : ${subLenght}`
-                : `총 댓글 : 0`}
-            </p>
-          </div>
+          )}
           <p className="text-xs cursor-pointer" onClick={toggleSubComment}>
             답글 달기
           </p>

@@ -47,6 +47,7 @@ export default function PostList() {
             post
               .filter((post) => post.type === "추천 시")
               .sort((a, b) => b.createdAt - a.createdAt)
+              .slice(0, 5)
               .map((post) => <PostCard key={post.id} post={post} />)}
         </ul>
       </div>

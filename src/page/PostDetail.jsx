@@ -78,7 +78,7 @@ export default function PostDetail() {
   return (
     <>
       {!post && <Spinner />}
-      <div className="w-11/12 2xl:w-2/5 my-0 mx-auto min-h-screen sm:min-h-full mb-10">
+      <div className="w-11/12 2xl:w-2/5 my-0 mx-auto min-h-half sm:min-h-full mb-10">
         <div className="mb-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center mb-4">

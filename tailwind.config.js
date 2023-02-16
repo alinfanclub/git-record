@@ -6,6 +6,9 @@ module.exports = {
       colors: {
         brand: "#6096B4",
       },
+      minHeight: {
+        half: "50vh",
+      },
       minWidth: {
         "1/2": "50%",
       },

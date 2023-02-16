@@ -63,3 +63,7 @@ code {
     justify-content: center;
   }
 }
+
+.test {
+  transition: all 1s;
+}

@@ -104,7 +104,7 @@ export async function removePost(fuck) {
   remove(ref(database, `post/${fuck}`));
 }
 
-// ~ 댓글 기능 개발
+// ! 댓글 기능 개발
 
 // ~ 댓글 작성
 export async function addComment(comment, user, postId) {
@@ -130,16 +130,47 @@ export async function getComments(Postid) {
       return Object.values(comment);
     });
 }
-// ~ 게시글 수정하기
-// TODO 구현 안하고 무조건 삭제 하게끔 할지 고민 필요
-export async function updateComment(comment, user, postId, commnetId) {
-  return set(ref(database, `post/${postId}/comments/${commnetId}`), {
-    comment,
-    createdAt: serverTimestamp(),
-  });
-}
+// // ~ 게시글 수정하기
+// // TODO 구현 안하고 무조건 삭제 하게끔 할지 고민 필요
+// export async function updateComment(comment, user, postId, commnetId) {
+//   return set(ref(database, `post/${postId}/comments/${commnetId}`), {
+//     comment,
+//     createdAt: serverTimestamp(),
+//   });
+// }
 
-// ~ 게시글 삭제하기
+// ~ 댓글 삭제하기
 export async function deleteComments(postId, commentId) {
   remove(ref(database, `post/${postId}/comments/${commentId}`));
+}
+
+// ! 대 댓글
+
+// 대 댓글 작성
+export async function addSubComment(comment, user, postId, commentId) {
+  const randomSubId = uuid();
+  return set(
+    ref(
+      database,
+      `post/${postId}/comments/${commentId}/subcomments/${randomSubId}`
+    ),
+    {
+      comment,
+      SubCommentId: randomSubId,
+      createdAt: serverTimestamp(),
+      userInfo: {
+        userUid: user.uid,
+        userName: user.displayName,
+        userProfile: user.photoURL,
+      },
+    }
+  );
+}
+
+export async function getSubComments(Postid, commentId) {
+  return get(ref(database, `post/${Postid}/comments/${commentId}/subcomments`)) //
+    .then((snapshot) => {
+      const comment = snapshot.val() || {};
+      return Object.values(comment);
+    });
 }

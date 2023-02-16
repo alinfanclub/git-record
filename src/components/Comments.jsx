@@ -18,7 +18,7 @@ export default function Comments() {
           <ul id="commentList">
             {comments &&
               comments
-                .sort((a, b) => b.createdAt - a.createdAt)
+                .sort((a, b) => a.createdAt - b.createdAt)
                 .map((obj) => (
                   <ShowComment
                     key={obj.commentId}

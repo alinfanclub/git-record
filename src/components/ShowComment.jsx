@@ -1,8 +1,10 @@
 import { Viewer } from "@toast-ui/react-editor";
-import React from "react";
-import { deleteComments } from "../api/firebase";
+import React, { useState } from "react";
+import { deleteComments, getSubComments } from "../api/firebase";
 import { AiFillDelete } from "react-icons/ai";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import SubCommentBlock from "./SubCommentBlock";
+import SubCommentShow from "./SubCommentShow";
 
 export default function ShowComment({
   commentData,
@@ -10,7 +12,10 @@ export default function ShowComment({
   param,
 }) {
   const queryClient = useQueryClient();
-
+  const [subComment, setSubComment] = useState(false);
+  const { data: subComments } = useQuery(["subComments"], () =>
+    getSubComments(param, commentId)
+  );
   const removeComment = useMutation(
     ({ param, commentId }) => deleteComments(param, commentId),
     {
@@ -22,6 +27,14 @@ export default function ShowComment({
       removeComment.mutate({ param, commentId }, { onSuccess: () => {} });
       // deleteComments(param, commentId).then(() => {});
     }
+  };
+
+  const toggleSubComment = () => {
+    setSubComment(!subComment);
+  };
+
+  const hideSub = () => {
+    setSubComment(false);
   };
 
   return (
@@ -42,6 +55,24 @@ export default function ShowComment({
       <div className="">
         <Viewer initialValue={comment} />
       </div>
+      <button type="button" onClick={toggleSubComment}>
+        답변 작성
+      </button>
+      {subComment && (
+        <div className="">
+          <SubCommentBlock commentId={commentId} hideSub={hideSub} />
+        </div>
+      )}
+      {
+        <ul>
+          {subComments &&
+            subComments
+              .sort((a, b) => a.createdAt - b.createdAt)
+              .map((obj) => (
+                <SubCommentShow key={obj.SubCommentId} subComments={obj} />
+              ))}
+        </ul>
+      }
     </li>
   );
 }

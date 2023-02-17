@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import "./EditorBlock.module.css";
 import SubmitButton from "./SubmitButton";
 import Spinner from "./Spinner";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function EditorBlock() {
   const [text, setText] = useState("");
@@ -23,6 +24,14 @@ export default function EditorBlock() {
   const navigate = useNavigate();
 
   const editorRef = useRef();
+
+  const queryClient = useQueryClient();
+
+  const uploadNewPost = useMutation(
+    ({ text, user, postInfo, postId }) => addPost(text, user, postInfo, postId),
+    { onSuccess: () => queryClient.invalidateQueries(["post"]) }
+  );
+
   const onChange = () => {
     const data = editorRef.current.getInstance().getHTML();
     setText(data);
@@ -49,10 +58,19 @@ export default function EditorBlock() {
       return false;
     } else {
       setIsUploading(true);
-      addPost(text, user, postInfo, postId).finally(() => {
-        setIsUploading(false);
-        navigate(`/post/${postId}`);
-      });
+      uploadNewPost.mutate(
+        { text, user, postInfo, postId },
+        {
+          onSuccess: () => {
+            setIsUploading(false);
+            navigate(`/post/${postId}`);
+          },
+        }
+      );
+      // addPost(text, user, postInfo, postId).finally(() => {
+      //   setIsUploading(false);
+      //   navigate(`/post/${postId}`);
+      // });
     }
   };
   return (
@@ -81,8 +99,9 @@ export default function EditorBlock() {
           onChange={handleChange}
           className="p-4 outline-none border border-gray-300 my-1 w-full"
           required
+          value=""
         >
-          <option value="" disabled selected>
+          <option value="" disabled>
             선택하세요
           </option>
           <option value="recomend">추천 시</option>

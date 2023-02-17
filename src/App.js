@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./components/PostList";
-import PostListByType from "./components/PostListByType";
+import PostListByType from "./page/PostListByType";
 import MapPage from "./page/MapPage";
 import NotFound from "./page/NotFound";
 import PostDetail from "./page/PostDetail";

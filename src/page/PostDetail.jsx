@@ -92,6 +92,7 @@ export default function PostDetail() {
                 {post && (
                   <small>
                     {time} ({formatAgo(post && post.createdAt, "ko")})
+                    {post.fixed && <span className="ml-2">수정됨</span>}
                   </small>
                 )}
               </div>

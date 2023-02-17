@@ -41,7 +41,7 @@ export default function SubCommentCard({ data, param, commentId }) {
   };
   return (
     <>
-      <li className="flex flex-col gap-4 py-4 border-b-2">
+      <li className="flex flex-col gap-4 py-4 border-t-2">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">
             <div>{data.userInfo.userName}</div>

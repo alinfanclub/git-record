@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Home from "./components/PostList";
+import PostListByType from "./components/PostListByType";
 import MapPage from "./page/MapPage";
 import NotFound from "./page/NotFound";
 import PostDetail from "./page/PostDetail";
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/post/update/:postId",
         element: <UpdatePost />,
+      },
+      {
+        path: "/post/:type/list",
+        element: <PostListByType />,
       },
     ],
   },

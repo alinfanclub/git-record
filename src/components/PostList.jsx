@@ -3,8 +3,9 @@ import { getPostData } from "../api/firebase";
 import PostCard from "./PostCard";
 import { useCookies } from "react-cookie";
 import moment from "moment";
-import { AiFillCloseCircle } from "react-icons/ai";
 import Spinner from "./Spinner";
+import { useNavigate } from "react-router-dom";
+import WelcomePop from "./common/WelcomePop";
 
 export default function PostList() {
   const {
@@ -26,17 +27,30 @@ export default function PostList() {
   };
   console.log(post);
   console.log(1);
+
+  const navigate = useNavigate();
   return (
     <section className="p-4 flex gap-10 flex-col mx-auto">
       {isLoading && <Spinner />}
       {error && <p>error!</p>}
       <div className="">
-        <div className="mb-4">창작 시</div>
+        <div className="mb-4 flex items-center gap-4">
+          <div className="">창작 시</div>
+          <div
+            onClick={() => {
+              navigate(`/post/creation/list`, { state: { post } });
+            }}
+            className="cursor-pointer"
+          >
+            더보기
+          </div>
+        </div>
         <ul className="flex gap-4 flex-col justify-center border border p-2">
           {post &&
             post
-              .filter((post) => post.type === "창작 시")
+              .filter((post) => post.type === "creation")
               .sort((a, b) => b.createdAt - a.createdAt)
+              .slice(0, 5)
               .map((post) => <PostCard key={post.id} post={post} />)}
         </ul>
       </div>
@@ -45,7 +59,7 @@ export default function PostList() {
         <ul className="flex gap-4 flex-col justify-center border border p-2">
           {post &&
             post
-              .filter((post) => post.type === "추천 시")
+              .filter((post) => post.type === "recomend")
               .sort((a, b) => b.createdAt - a.createdAt)
               .slice(0, 5)
               .map((post) => <PostCard key={post.id} post={post} />)}
@@ -56,31 +70,15 @@ export default function PostList() {
         <ul className="flex gap-4 flex-col justify-center border border p-2">
           {post &&
             post
-              .filter((post) => post.type === "부스러기")
+              .filter((post) => post.type === "etc")
               .sort((a, b) => b.createdAt - a.createdAt)
+              .slice(0, 5)
               .map((post) => <PostCard key={post.id} post={post} />)}
         </ul>
       </div>
-      {cookie[COOKIE_KEY] ? null : (
-        <div className="w-full h-full fixed top-0 left-0 bg-black/50 flex items-center justify-center z-10">
-          <div className="w-5/6 sm:w-1/5 h-auto bg-white aspect-video relative p-4 rounded-lg">
-            <div className="flex items-center justify-between">
-              <h4 className="text-base text-lg">공지 사항</h4>
-              <AiFillCloseCircle
-                onClick={closeModal}
-                className="cursor-pointer text-3xl"
-              />
-            </div>
-            <div className="popup_text text-center flex flex-col h-full justify-center text-sm text-xs">
-              <p>안녕하세요, 부스러기입니다.</p>
-              <p>
-                부스러기는 주로 시, 시각 예술을 수집하고 공유하는 사이트입니다.
-              </p>
-              <small>댓글 및 추가 기능은 개발 중입니다 ^^</small>
-            </div>
-          </div>
-        </div>
-      )}
+
+      {/* 팝업 */}
+      {cookie[COOKIE_KEY] ? null : <WelcomePop closeModal={closeModal} />}
     </section>
   );
 }

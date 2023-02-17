@@ -92,7 +92,7 @@ export async function updatePost(text, user, postInfo, id) {
     ...postInfo,
     text,
     id,
-    createdAt: serverTimestamp(),
+    fixed:true,
     userInfo: {
       userUid: user.uid,
       userName: user.displayName,

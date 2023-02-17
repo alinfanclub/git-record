@@ -16,7 +16,17 @@ export default function PostCard({
     >
       <div className="flex items-center gap-4 mb-4 sm:mb-0">
         {title}
-        <small>{type ? type : "미분류"}</small>
+        <small>
+          {type
+            ? type === "creation"
+              ? "창작시"
+              : type === "recomend"
+              ? "추천시"
+              : type === "etc"
+              ? "부스러기"
+              : "미분류"
+            : null}
+        </small>
         <small>{formatAgo(createdAt, "ko")}</small>
       </div>
       <div className="flex items-center gap-4 ml-auto">

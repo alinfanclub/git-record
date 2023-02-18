@@ -36,7 +36,7 @@ export default function PostList() {
           </div>
           <Link
             to="post/creation/list"
-            className="cursor-pointer text-neutral-200 text-xs hover:text-neutral-500"
+            className="cursor-pointer text-neutral-400 text-xs hover:text-neutral-500"
           >
             더보기
           </Link>
@@ -57,7 +57,7 @@ export default function PostList() {
           </div>
           <Link
             to="post/recomend/list"
-            className="cursor-pointer text-neutral-200 text-xs hover:text-neutral-500"
+            className="cursor-pointer text-neutral-400 text-xs hover:text-neutral-500"
           >
             더보기
           </Link>
@@ -78,7 +78,7 @@ export default function PostList() {
           </div>
           <Link
             to="post/etc/list"
-            className="cursor-pointer text-neutral-200 text-xs hover:text-neutral-500"
+            className="cursor-pointer text-neutral-400 text-xs hover:text-neutral-500"
           >
             더보기
           </Link>

@@ -32,8 +32,6 @@ export default function ShowComment({
     if (sub) {
       setSubLength(sub.length);
     }
-
-    console.log(sub);
   }, [sub]);
 
   const removeComment = useMutation(
@@ -75,7 +73,7 @@ export default function ShowComment({
           />
         </div>
         {user && user.uid === userInfo.userUid && (
-          <div className="" onClick={deleteComment}>
+          <div className="cursor-pointer" onClick={deleteComment}>
             <AiFillDelete />
           </div>
         )}

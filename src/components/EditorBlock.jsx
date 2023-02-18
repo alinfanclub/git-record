@@ -67,10 +67,6 @@ export default function EditorBlock() {
           },
         }
       );
-      // addPost(text, user, postInfo, postId).finally(() => {
-      //   setIsUploading(false);
-      //   navigate(`/post/${postId}`);
-      // });
     }
   };
   return (
@@ -99,7 +95,7 @@ export default function EditorBlock() {
           onChange={handleChange}
           className="p-4 outline-none border border-gray-300 my-1 w-full"
           required
-          value=""
+          value={postInfo ? postInfo.type : ""}
         >
           <option value="" disabled>
             선택하세요

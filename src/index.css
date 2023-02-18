@@ -67,3 +67,8 @@ code {
 .test {
   transition: all 1s;
 }
+
+#detailFont,
+.toastui-editor-contents *:not(table) {
+  font-family: "Gowun Dodum", sans-serif;
+}

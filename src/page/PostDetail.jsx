@@ -97,7 +97,7 @@ export default function PostDetail() {
                 )}
               </div>
             </div>
-            {user && user.uid === post.userUid && (
+            {post && user && user.uid === post.userInfo.userUid && (
               <div className="cursor-pointer flex items-center gap-4">
                 <AiFillDelete onClick={deletePost} />
                 <MdOutlineAutoFixHigh onClick={gotoUpdate} />

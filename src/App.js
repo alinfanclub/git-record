@@ -7,6 +7,7 @@ import PostDetail from "./page/PostDetail";
 import Root from "./page/Root";
 import UpdatePost from "./page/UpdatePost";
 import WritePost from "./page/WritePost";
+import UserDeatail from "./page/UserDeatail";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "/post/:type/list",
         element: <PostListByType />,
+      },
+      {
+        path: "/user/:userId",
+        element: <UserDeatail />,
       },
     ],
   },

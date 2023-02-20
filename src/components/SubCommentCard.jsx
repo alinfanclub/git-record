@@ -53,7 +53,7 @@ export default function SubCommentCard({ data, param, commentId }) {
                 className="w-10 h-10 rounded-full mr-2"
               />
             </div>
-            <span className="text-sm">
+            <span className="text-xs">
               ({formatAgo(data.createdAt, "ko")})
             </span>
           </div>

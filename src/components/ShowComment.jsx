@@ -74,7 +74,7 @@ export default function ShowComment({
               className="w-10 h-10 rounded-full mr-2"
             />
           </div>
-          <span className="text-sm">
+          <span className="text-xs">
             ({formatAgo(commentData.createdAt, "ko")})
           </span>
         </div>

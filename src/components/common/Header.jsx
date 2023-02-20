@@ -24,7 +24,7 @@ export default function Header() {
           </Link>
         )}
         {user && (
-          <div className="relartive" onClick={sideToggle}>
+          <div className="relartive flex items-center mr-6" onClick={sideToggle}>
             <UserProfile user={user} />
             {side && (
               <div className="block sm:hidden absolute top-16 bg-white border border-grey py-5 px-10 right-4">
@@ -33,10 +33,11 @@ export default function Header() {
                     <BsPencilSquare className="text-2xl" />
                   </Link>
                   <LoginButton text={"logout"} onClick={logout} />
-                  {/* 개인화면 정보 이동하는 기능 만들기 */}
+                  <Link to={`/user/${user.uid}`}>내가 쓴 글</Link>
                 </div>
               </div>
             )}
+            <div className="hidden sm:block"><Link to={`/user/${user.uid}`}>내가 쓴 글</Link></div>
           </div>
         )}
         {!user && <LoginButton text={"login"} onClick={login} />}

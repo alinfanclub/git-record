@@ -8,6 +8,7 @@ import Root from "./page/Root";
 import UpdatePost from "./page/UpdatePost";
 import WritePost from "./page/WritePost";
 import UserDeatail from "./page/UserDeatail";
+import ProtectedRoute from "./page/ProtectedRoute";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +23,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/post/new",
-        element: <WritePost />,
+        element: (
+          <ProtectedRoute>
+            <WritePost />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/post/:postId",
@@ -30,7 +35,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/post/update/:postId",
-        element: <UpdatePost />,
+        element: (
+          <ProtectedRoute>
+            <UpdatePost />
+          </ProtectedRoute>
+        ),
       },
       {
         path: "/post/:type/list",
@@ -38,7 +47,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/user/:userId",
-        element: <UserDeatail />,
+        element: (
+          <ProtectedRoute>
+            <UserDeatail />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

@@ -5,12 +5,14 @@ import { formatAgo } from "../util/timeago";
 import "./PostDetail.module.css";
 import { AiFillDelete } from "react-icons/ai";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
-import { getPostDataDetail, removePost } from "../api/firebase";
+import { FcLike, FcLikePlaceholder } from "react-icons/fc";
+import { addUserLike, deleteHeart, getPostDataDetail, removePost, userLikeList } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
 import CommentCreate from "../components/CommentCreate";
 // import ShowComment from "../components/ShowComment";
 import Comments from "../components/Comments";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // import { useQuery } from "@tanstack/react-query";
 
 export default function PostDetail() {
@@ -21,22 +23,38 @@ export default function PostDetail() {
 
   const { user } = useAuthContext();
   const navigate = useNavigate();
-
   const param = useParams().postId;
-  const [post, setPost] = useState();
+  const [text, setText] = useState();
   const [time, setTime] = useState();
 
-  // const {
-  //   isLoading,
-  //   error,
-  //   data: post,
-  // } = useQuery(["post"], async () => await getPostDataDetail(param));
+  const queryClient = useQueryClient();
+
+  const {
+    isLoading,
+    error,
+    data: post,
+  } = useQuery(["postDetail"], async () => await getPostDataDetail(param));
+
+  const {data: userLike} = useQuery({ queryKey: ['userLike'], queryFn: async () => userLikeList(param) });
 
   useEffect(() => {
     getPostDataDetail(param).then((res) => {
-      return setPost(res);
+      return setText(res);
     });
   }, [param]);
+
+  const upHeart = useMutation(
+    ({param, user}) => addUserLike(param, user),
+    {
+      onSuccess: () => queryClient.invalidateQueries(["userLike"])
+    }
+  )
+  const removeHeart = useMutation(
+    ({param, user}) => deleteHeart(param, user),
+    {
+      onSuccess: () => queryClient.invalidateQueries(["userLike"])
+    }
+  )
 
   useEffect(() => {
     if (post) {
@@ -75,10 +93,35 @@ export default function PostDetail() {
       alert("권한이 없습니다.");
     }
   };
+
+  const handleHeartToggle = () => {
+    if(!user) {
+      alert("글이 좋았다면 로그인 하시고 하트 꾸욱 ~ ")
+    } else if(userLike.map((obj) => obj.user ).includes(user.uid)) {
+      removeHeart.mutate(
+        {param, user}, {
+          onSuccess: () => {
+            console.log("delete sucess")
+          }
+        }
+      )
+    } else {
+      upHeart.mutate(
+        {param, user},
+        {
+          onSuccess: () => {
+            console.log("sucess!");
+          }
+        }
+      )
+    }
+  }
+
   return (
     <>
-      {!post && <Spinner />}
-      <div className="w-11/12 2xl:w-2/5 my-0 mx-auto min-h-half sm:min-h-full mb-10">
+    {error && "알 수 없는 에러 뒤로 돌아가주세요!"}
+      {isLoading && <Spinner />}
+      <div className="w-11/12 2xl:w-2/5 my-0 mx-auto min-h-half sm:min-h-full">
         <div className="mb-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center mb-4">
@@ -109,11 +152,19 @@ export default function PostDetail() {
             <small>{post && post.author ? post.author : "작가 불명"}</small>
           </div>
         </div>
-        {post && <Viewer initialValue={post.text}></Viewer>}
+        {text && <Viewer initialValue={text && text.text}></Viewer>}
+        <div className="mt-20 flex items-center gap-2 justify-end">
+            <span  onClick={handleHeartToggle}>
+              {userLike && user && userLike.map((obj) => obj.user ).includes(user.uid) ? <FcLike /> : <FcLikePlaceholder />}
+            </span>
+            <span>
+              {userLike && userLike.length}
+            </span>
+        </div>
       </div>
       {/* 댓글 컴포넌트 */}
       {/* 댓글 컴포넌트 */}
-      <div className="pb-40 pt-10">
+      <div className="pb-40">
         <CommentCreate />
         <Comments />
       </div>

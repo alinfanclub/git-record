@@ -72,3 +72,7 @@ code {
 .toastui-editor-contents *:not(table) {
   font-family: "Gowun Dodum", sans-serif;
 }
+
+.subComments li:nth-child(n+2) {
+  @apply border-t-2 border-dashed
+}

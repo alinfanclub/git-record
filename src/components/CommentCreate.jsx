@@ -61,6 +61,11 @@ export default function CommentCreate() {
             editorRef.current.getInstance().setHTML("");
             // navigate(`/post/${postId}`);
           },
+          onError: () => {
+            alert("로그인은 하셨나요?")
+            editorRef.current.getInstance().setHTML("");
+            setIsUploading(false);
+          }
         }
       );
       // addComment(comment, user, postId).finally(() => {

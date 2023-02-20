@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import SubCommentBlock from "./SubCommentBlock";
 import SubCommentShow from "./SubCommentShow";
 import { useAuthContext } from "../context/AuthContext";
+import { formatAgo } from "../util/timeago";
 
 export default function ShowComment({
   commentData,
@@ -64,13 +65,18 @@ export default function ShowComment({
   return (
     <li className="h-auto w-full px-2 py-4 box-border">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <div>{userInfo.userName}</div>
-          <img
-            src={userInfo.userProfile}
-            alt=""
-            className="w-10 h-10 rounded-full mr-2"
-          />
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
+            <div>{userInfo.userName}</div>
+            <img
+              src={userInfo.userProfile}
+              alt=""
+              className="w-10 h-10 rounded-full mr-2"
+            />
+          </div>
+          <span className="text-sm">
+            ({formatAgo(commentData.createdAt, "ko")})
+          </span>
         </div>
         {user && user.uid === userInfo.userUid && (
           <div className="cursor-pointer" onClick={deleteComment}>

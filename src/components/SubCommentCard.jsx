@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { romoveSubCommentDetail } from "../api/firebase";
 import { AiFillDelete } from "react-icons/ai";
 import { useAuthContext } from "../context/AuthContext";
+import { formatAgo } from "../util/timeago";
 
 export default function SubCommentCard({ data, param, commentId }) {
   const [subId, setSubId] = useState();
@@ -41,15 +42,20 @@ export default function SubCommentCard({ data, param, commentId }) {
   };
   return (
     <>
-      <li className="flex flex-col gap-4 py-4 border-t-2">
+      <li className="flex flex-col gap-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <div>{data.userInfo.userName}</div>
-            <img
-              src={data.userInfo.userProfile}
-              alt=""
-              className="w-10 h-10 rounded-full mr-2"
-            />
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-4">
+              <div>{data.userInfo.userName}</div>
+              <img
+                src={data.userInfo.userProfile}
+                alt=""
+                className="w-10 h-10 rounded-full mr-2"
+              />
+            </div>
+            <span className="text-sm">
+              ({formatAgo(data.createdAt, "ko")})
+            </span>
           </div>
           {user && user.uid === data.userInfo.userUid && (
             <button onClick={deleteSub} className="cursor-pointer">

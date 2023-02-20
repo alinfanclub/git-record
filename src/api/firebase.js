@@ -87,6 +87,24 @@ export async function addPost(text, user, postInfo, id) {
     },
   });
 }
+
+// comments 
+export async function addUserLike(id, user) {
+  return set(ref(database, `post/${id}/userLike/${user.uid}`), {
+    user: user.uid,
+    userName: user.displayName
+  });
+}
+export async function userLikeList(id) {
+  return get(ref(database, `post/${id}/userLike`)).then((snapshot) => {
+    const Like = snapshot.val() || {};
+    return Object.values(Like);
+  });;
+}
+export async function deleteHeart(id, user) {
+  return remove(ref(database, `post/${id}/userLike/${user.uid}`))
+}
+
 export async function updatePost(text, user, postInfo, id) {
   return set(ref(database, `post/${id}`), {
     ...postInfo,

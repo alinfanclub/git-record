@@ -1,6 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { formatAgo } from "../util/timeago";
+import {AiTwotoneHeart} from "react-icons/ai"
+import {BiCommentDetail} from "react-icons/bi"
 
 export default function PostCard({
   post,
@@ -36,6 +38,14 @@ export default function PostCard({
           alt={userInfo.displayName}
           className="w-10 h-10 rounded-full"
         />
+        <div className="flex items-center gap-2">
+          <AiTwotoneHeart />
+          <span>{post.userLike ? Object.values(post.userLike).length : "0"}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <BiCommentDetail />
+          <span>{post.comments ? Object.values(post.comments).length : "0"}</span>
+        </div>
       </div>
     </li>
   );

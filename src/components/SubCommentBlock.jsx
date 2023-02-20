@@ -31,6 +31,10 @@ export default function SubCommentBlock({ commentId, hideSub }) {
           editorRef.current.getInstance().setHTML("");
           hideSub();
         },
+        onError: () => {
+          alert("로그인은 하셨나요?")
+          editorRef.current.getInstance().setHTML("");
+        }
       }
     );
   };

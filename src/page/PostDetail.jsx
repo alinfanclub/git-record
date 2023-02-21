@@ -6,7 +6,13 @@ import "./PostDetail.module.css";
 import { AiFillDelete } from "react-icons/ai";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
-import { addUserLike, deleteHeart, getPostDataDetail, removePost, userLikeList } from "../api/firebase";
+import {
+  addUserLike,
+  deleteHeart,
+  getPostDataDetail,
+  removePost,
+  userLikeList,
+} from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
 import Spinner from "../components/Spinner";
 import CommentCreate from "../components/CommentCreate";
@@ -35,7 +41,10 @@ export default function PostDetail() {
     data: post,
   } = useQuery(["postDetail"], async () => await getPostDataDetail(param));
 
-  const {data: userLike} = useQuery({ queryKey: ['userLike'], queryFn: async () => userLikeList(param) });
+  const { data: userLike } = useQuery({
+    queryKey: ["userLike"],
+    queryFn: async () => userLikeList(param),
+  });
 
   useEffect(() => {
     getPostDataDetail(param).then((res) => {
@@ -43,18 +52,15 @@ export default function PostDetail() {
     });
   }, [param]);
 
-  const upHeart = useMutation(
-    ({param, user}) => addUserLike(param, user),
-    {
-      onSuccess: () => queryClient.invalidateQueries(["userLike"])
-    }
-  )
+  const upHeart = useMutation(({ param, user }) => addUserLike(param, user), {
+    onSuccess: () => queryClient.invalidateQueries(["userLike"]),
+  });
   const removeHeart = useMutation(
-    ({param, user}) => deleteHeart(param, user),
+    ({ param, user }) => deleteHeart(param, user),
     {
-      onSuccess: () => queryClient.invalidateQueries(["userLike"])
+      onSuccess: () => queryClient.invalidateQueries(["userLike"]),
     }
-  )
+  );
 
   useEffect(() => {
     if (post) {
@@ -88,38 +94,39 @@ export default function PostDetail() {
 
   const gotoUpdate = () => {
     if (post.userInfo.userUid === user.uid) {
-      navigate(`/post/update/${post.id}`, { state: { post } });
+      navigate(`/post/update/${post.id}`, { state: { post }, replace: true });
     } else {
       alert("권한이 없습니다.");
     }
   };
 
   const handleHeartToggle = () => {
-    if(!user) {
-      alert("글이 좋았다면 로그인 하시고 하트 꾸욱 ~ ")
-    } else if(userLike.map((obj) => obj.user ).includes(user.uid)) {
+    if (!user) {
+      alert("글이 좋았다면 로그인 하시고 하트 꾸욱 ~ ");
+    } else if (userLike.map((obj) => obj.user).includes(user.uid)) {
       removeHeart.mutate(
-        {param, user}, {
+        { param, user },
+        {
           onSuccess: () => {
-            console.log("delete sucess")
-          }
+            console.log("delete sucess");
+          },
         }
-      )
+      );
     } else {
       upHeart.mutate(
-        {param, user},
+        { param, user },
         {
           onSuccess: () => {
             console.log("sucess!");
-          }
+          },
         }
-      )
+      );
     }
-  }
+  };
 
   return (
     <>
-    {error && "알 수 없는 에러 뒤로 돌아가주세요!"}
+      {error && "알 수 없는 에러 뒤로 돌아가주세요!"}
       {isLoading && <Spinner />}
       <div className="w-11/12 2xl:w-2/5 my-0 mx-auto min-h-half sm:min-h-full">
         <div className="mb-4 py-4">
@@ -154,12 +161,16 @@ export default function PostDetail() {
         </div>
         {text && <Viewer initialValue={text && text.text}></Viewer>}
         <div className="mt-20 flex items-center gap-2 justify-end">
-            <span  onClick={handleHeartToggle}>
-              {userLike && user && userLike.map((obj) => obj.user ).includes(user.uid) ? <FcLike /> : <FcLikePlaceholder />}
-            </span>
-            <span>
-              {userLike && userLike.length}
-            </span>
+          <span onClick={handleHeartToggle}>
+            {userLike &&
+            user &&
+            userLike.map((obj) => obj.user).includes(user.uid) ? (
+              <FcLike />
+            ) : (
+              <FcLikePlaceholder />
+            )}
+          </span>
+          <span>{userLike && userLike.length}</span>
         </div>
       </div>
       {/* 댓글 컴포넌트 */}

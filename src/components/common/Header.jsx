@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// import { Link } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
 import LoginButton from "../LoginButton";
 import UserProfile from "../UserProfile";
@@ -24,12 +23,15 @@ export default function Header() {
           </Link>
         )}
         {user && (
-          <div className="relartive flex items-center mr-6" onClick={sideToggle}>
+          <div
+            className="relartive flex items-center mr-6"
+            onClick={sideToggle}
+          >
             <UserProfile user={user} />
             {side && (
               <div className="block sm:hidden absolute top-16 bg-white border border-grey py-5 px-10 right-4">
                 <div className="flex gap-4 items-center flex-col">
-                  <Link to="/post/new" className="">
+                  <Link to="/post/new" className="" replace>
                     <BsPencilSquare className="text-2xl" />
                   </Link>
                   <LoginButton text={"logout"} onClick={logout} />
@@ -37,7 +39,9 @@ export default function Header() {
                 </div>
               </div>
             )}
-            <div className="hidden sm:block"><Link to={`/user/${user.uid}`}>내가 쓴 글</Link></div>
+            <div className="hidden sm:block">
+              <Link to={`/user/${user.uid}`}>내가 쓴 글</Link>
+            </div>
           </div>
         )}
         {!user && <LoginButton text={"login"} onClick={login} />}

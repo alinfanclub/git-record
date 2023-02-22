@@ -8,7 +8,7 @@ import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-sy
 import { uploadImage } from "../api/UploadImage";
 import SpinnerMic from "./SpinnerMic";
 import { useParams } from "react-router-dom";
-import { addComment } from "../api/firebase";
+import { addComment, UserChekFalse } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
 import SubmitButton from "./SubmitButton";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -46,6 +46,10 @@ export default function CommentCreate() {
     }
   );
 
+  const checkFalse = useMutation(({ postId }) => UserChekFalse(postId), {
+    onSuccess: () => queryClient.invalidateQueries(["postAlert"]),
+  });
+
   const sendComment = (e) => {
     e.preventDefault();
     if (comment === "") {
@@ -59,13 +63,14 @@ export default function CommentCreate() {
           onSuccess: () => {
             setIsUploading(false);
             editorRef.current.getInstance().setHTML("");
+            checkFalse.mutate({ postId });
             // navigate(`/post/${postId}`);
           },
           onError: () => {
-            alert("로그인은 하셨나요?")
+            alert("로그인은 하셨나요?");
             editorRef.current.getInstance().setHTML("");
             setIsUploading(false);
-          }
+          },
         }
       );
       // addComment(comment, user, postId).finally(() => {

@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Editor } from "@toast-ui/react-editor";
 import React, { useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { addSubComment } from "../api/firebase";
+import { addSubComment, UserChekFalse } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
 import CancleButton from "./CancleButton";
 import SubmitButton from "./SubmitButton";
@@ -22,6 +22,10 @@ export default function SubCommentBlock({ commentId, hideSub }) {
     }
   );
 
+  const checkFalse = useMutation(({ postId }) => UserChekFalse(postId), {
+    onSuccess: () => queryClient.invalidateQueries(["postAlert"]),
+  });
+
   const submitSubComment = (e) => {
     e.preventDefault();
     uploadSubComment.mutate(
@@ -30,11 +34,12 @@ export default function SubCommentBlock({ commentId, hideSub }) {
         onSuccess: () => {
           editorRef.current.getInstance().setHTML("");
           hideSub();
+          checkFalse.mutate({ postId });
         },
         onError: () => {
-          alert("로그인은 하셨나요?")
+          alert("로그인은 하셨나요?");
           editorRef.current.getInstance().setHTML("");
-        }
+        },
       }
     );
   };

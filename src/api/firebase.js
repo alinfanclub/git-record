@@ -14,6 +14,7 @@ import {
   set,
   serverTimestamp,
   remove,
+  update,
 } from "firebase/database";
 // import { v4 as uuid } from "uuid";
 
@@ -87,22 +88,32 @@ export async function addPost(text, user, postInfo, id) {
     },
   });
 }
+export async function UserChekTrue(id) {
+  return update(ref(database, `post/${id}`), {
+    readCheck: true,
+  });
+}
+export async function UserChekFalse(id) {
+  return update(ref(database, `post/${id}`), {
+    readCheck: false,
+  });
+}
 
-// comments 
+// comments
 export async function addUserLike(id, user) {
   return set(ref(database, `post/${id}/userLike/${user.uid}`), {
     user: user.uid,
-    userName: user.displayName
+    userName: user.displayName,
   });
 }
 export async function userLikeList(id) {
   return get(ref(database, `post/${id}/userLike`)).then((snapshot) => {
     const Like = snapshot.val() || {};
     return Object.values(Like);
-  });;
+  });
 }
 export async function deleteHeart(id, user) {
-  return remove(ref(database, `post/${id}/userLike/${user.uid}`))
+  return remove(ref(database, `post/${id}/userLike/${user.uid}`));
 }
 
 export async function updatePost(text, user, postInfo, id) {
@@ -110,7 +121,22 @@ export async function updatePost(text, user, postInfo, id) {
     ...postInfo,
     text,
     id,
-    fixed:true,
+    fixed: true,
+    userInfo: {
+      userUid: user.uid,
+      userName: user.displayName,
+      userProfile: user.photoURL,
+    },
+  });
+}
+
+export async function readCheckPost(text, user, postInfo, id) {
+  return set(ref(database, `post/${id}`), {
+    ...postInfo,
+    text,
+    id,
+    createdAt: serverTimestamp(),
+    UserRead: false,
     userInfo: {
       userUid: user.uid,
       userName: user.displayName,

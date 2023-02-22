@@ -11,6 +11,7 @@ import {
   deleteHeart,
   getPostDataDetail,
   removePost,
+  UserChekTrue,
   userLikeList,
 } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
@@ -55,12 +56,17 @@ export default function PostDetail() {
   const upHeart = useMutation(({ param, user }) => addUserLike(param, user), {
     onSuccess: () => queryClient.invalidateQueries(["userLike"]),
   });
+
   const removeHeart = useMutation(
     ({ param, user }) => deleteHeart(param, user),
     {
       onSuccess: () => queryClient.invalidateQueries(["userLike"]),
     }
   );
+
+  const mock = useMutation(({ param }) => UserChekTrue(param), {
+    onSuccess: () => queryClient.invalidateQueries(["postAlert"]),
+  });
 
   useEffect(() => {
     if (post) {
@@ -73,12 +79,41 @@ export default function PostDetail() {
       const createdAtSimple = `${year}-${month}-${day} ${hour}:${minutes}`;
       setTime(createdAtSimple);
     }
-    // console.log(post);
   }, [post]);
+
+  useEffect(() => {
+    if (post) {
+      if (user) {
+        if (post.userInfo.userUid === user.uid) {
+          mock.mutate(
+            { param },
+            {
+              onSuccess: () => {
+                console.log("mock");
+              },
+            }
+          );
+        }
+      }
+    }
+    console.log(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, post, param]);
 
   // console.log(post);
 
   // console.log(1);
+
+  // const mockClick = () => {
+  //   mock.mutate(
+  //     { param },
+  //     {
+  //       onSuccess: () => {
+  //         console.log("mock");
+  //       },
+  //     }
+  //   );
+  // };
 
   const deletePost = () => {
     if (post.userInfo.userUid === user.uid) {
@@ -129,6 +164,8 @@ export default function PostDetail() {
       {error && "알 수 없는 에러 뒤로 돌아가주세요!"}
       {isLoading && <Spinner />}
       <div className="w-11/12 2xl:w-2/5 my-0 mx-auto min-h-half sm:min-h-full">
+        {/* <button onClick={mockClick}>mock</button>
+        <button onClick={mockClickTrue}>mockTrue</button> */}
         <div className="mb-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center mb-4">

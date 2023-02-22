@@ -64,9 +64,9 @@ export default function PostDetail() {
     }
   );
 
-  // const mock = useMutation(({ param }) => UserChekFalse(param), {
-  //   onSuccess: () => queryClient.invalidateQueries(["postDetail"]),
-  // });
+  const mock = useMutation(({ param }) => UserChekTrue(param), {
+    onSuccess: () => queryClient.invalidateQueries(["postAlert"]),
+  });
 
   useEffect(() => {
     if (post) {
@@ -82,12 +82,20 @@ export default function PostDetail() {
   }, [post]);
 
   useEffect(() => {
-    if ((post, user)) {
-      if (user.uid === post.userInfo.userUid) {
-        UserChekTrue(param);
+    if (post) {
+      if (user) {
+        if (post.userInfo.userUid === user.uid) {
+          mock.mutate(
+            { param },
+            {
+              onSuccess: () => {
+                console.log("mock");
+              },
+            }
+          );
+        }
       }
     }
-    console.log(1);
   }, [user, post, param]);
 
   // console.log(post);

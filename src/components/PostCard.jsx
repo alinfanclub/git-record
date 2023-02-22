@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { formatAgo } from "../util/timeago";
 import { AiTwotoneHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
+import { GoPrimitiveDot } from "react-icons/go";
 import { useAuthContext } from "../context/AuthContext";
 
 export default function PostCard({
@@ -35,9 +36,11 @@ export default function PostCard({
         <small>
           {user &&
           post.userInfo.userUid === user.uid &&
-          post.readCheck === false
-            ? "안 읽음"
-            : null}
+          post.readCheck === false ? (
+            <div className="text-amber-400 text-2xl">
+              <GoPrimitiveDot />
+            </div>
+          ) : null}
         </small>
       </div>
       <div className="flex items-center gap-4 ml-auto">

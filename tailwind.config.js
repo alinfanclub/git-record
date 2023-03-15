@@ -14,6 +14,8 @@ module.exports = {
       },
       maxWidth: {
         "1/2": "50%",
+        ssm:"55%",
+        s:"100%"
       },
       fontSize: {
         sm: "1vw",

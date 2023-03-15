@@ -192,7 +192,7 @@ export default function PostDetail() {
             )}
           </div>
           <div className="flex items-end gap-2 my-4" id="detailFont">
-            <h2 className="text-2xl">{post && post.title}</h2>
+            <h2 className="sm:text-2xl">{post && post.title}</h2>
             <small>{post && post.author ? post.author : "작가 불명"}</small>
           </div>
         </div>

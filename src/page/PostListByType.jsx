@@ -21,6 +21,16 @@ export default function PostListByType() {
       {error && <NotFound />}
       {isLoading && <Spinner />}
       <div className="p-4 sm:px-8 flex gap-10 flex-col mx-auto min-h-screen">
+        <h2 className="text-center text-xl font-medium">
+          {param
+            ? param === "creation"
+              ? "모든 창작시 들"
+              : param === "recomend"
+              ? "모든 추천시 들"
+              : param === "etc"
+              ? "모든 부스러기 들"
+              : "미분류"
+            : null}</h2>
         <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4">
           {Post &&
             Post.filter((post) => post.type === param)

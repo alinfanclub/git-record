@@ -106,9 +106,9 @@ export default function UpdatePost() {
           <option value="" disabled>
             선택하세요
           </option>
-          <option value="추천 시">추천 시</option>
-          <option value="창작 시">창작 시</option>
-          <option value="부스러기">부스러기</option>
+          <option value="recomend">추천 시</option>
+          <option value="creation">창작 시</option>
+          <option value="etc">부스러기</option>
         </select>
         <Editor
           initialValue={post.text}

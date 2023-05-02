@@ -69,6 +69,29 @@ export async function getPostData() {
       return [];
     });
 }
+
+export async function getPostDataForType(params) {
+  return get(ref(database, "post")) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return Object.values(snapshot.val())
+          .filter((post) => post.type === params)
+          .sort((a, b) => b.createdAt - a.createdAt);
+      }
+      return [];
+    });
+}
+export async function getPostDataForUsername(params) {
+  return get(ref(database, "post")) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return Object.values(snapshot.val())
+          .filter((post) => post.userInfo.userUid === params)
+          .sort((a, b) => b.createdAt - a.createdAt);
+      }
+      return [];
+    });
+}
 export async function getPostDataDetail(id) {
   return get(ref(database, `post/${id}`)) //
     .then((snapshot) => {
@@ -99,7 +122,7 @@ export async function UserChekFalse(id) {
   });
 }
 
-// comments
+// ! comments
 export async function addUserLike(id, user) {
   return set(ref(database, `post/${id}/userLike/${user.uid}`), {
     user: user.uid,

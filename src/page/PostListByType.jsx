@@ -1,20 +1,36 @@
-import { useQuery } from "@tanstack/react-query";
-import React from "react";
+import { QueryClient, useQuery } from "@tanstack/react-query";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { getPostData } from "../api/firebase";
+import { getPostData, getPostDataForType } from "../api/firebase";
 import PostCard from "../components/PostCard";
 import Spinner from "../components/Spinner";
 import NotFound from "./NotFound";
+import { useState } from "react";
+import Pagination from "react-js-pagination";
+import "./PostListByType.css";
 
 export default function PostListByType() {
+  const param = useParams().type;
+  const [page, setPage] = useState(1);
+  const [items, setItems] = useState(10);
   const {
     isLoading,
     error,
     data: Post,
-  } = useQuery({ queryKey: ["post"], queryFn: getPostData });
+  } = useQuery({
+    queryKey: ["postType"],
+    queryFn: () => getPostDataForType(param),
+  });
+
   console.log(Post);
-  const param = useParams().type;
   console.log(param);
+
+  const handlePageChange = (page) => {
+    setPage(page);
+  };
+  const itemChange = (e) => {
+    setItems(Number(e.target.value));
+  };
 
   return (
     <>
@@ -30,13 +46,20 @@ export default function PostListByType() {
               : param === "etc"
               ? "모든 부스러기 들"
               : "미분류"
-            : null}</h2>
+            : null}
+        </h2>
         <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4">
           {Post &&
-            Post.filter((post) => post.type === param)
-              .sort((a, b) => b.createdAt - a.createdAt)
-              .map((post, index) => <PostCard key={post.id} post={post} />)}
+            Post.slice(items * (page - 1), items * (page - 1) + items).map(
+              (post, index) => <PostCard key={post.id} post={post} />
+            )}
         </ul>
+        <Pagination
+          activePage={page}
+          itemsCountPerPage={items}
+          totalItemsCount={Post ? Post.length : 0}
+          onChange={handlePageChange}
+        ></Pagination>
       </div>
     </>
   );

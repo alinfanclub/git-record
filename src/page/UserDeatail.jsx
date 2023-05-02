@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { getPostData, getPostDataForUsername } from "../api/firebase";
+import { getPostDataForUsername } from "../api/firebase";
 import PostCard from "../components/PostCard";
 import Spinner from "../components/Spinner";
 import Pagination from "react-js-pagination";
@@ -21,9 +21,6 @@ export default function UserDeatail() {
 
   const handlePageChange = (page) => {
     setPage(page);
-  };
-  const itemChange = (e) => {
-    setItems(Number(e.target.value));
   };
   return (
     <>

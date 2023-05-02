@@ -1,7 +1,7 @@
-import { QueryClient, useQuery } from "@tanstack/react-query";
-import React, { useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
+import React from "react";
 import { useParams } from "react-router-dom";
-import { getPostData, getPostDataForType } from "../api/firebase";
+import { getPostDataForType } from "../api/firebase";
 import PostCard from "../components/PostCard";
 import Spinner from "../components/Spinner";
 import NotFound from "./NotFound";
@@ -27,9 +27,6 @@ export default function PostListByType() {
 
   const handlePageChange = (page) => {
     setPage(page);
-  };
-  const itemChange = (e) => {
-    setItems(Number(e.target.value));
   };
 
   return (

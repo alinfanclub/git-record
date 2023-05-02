@@ -9,7 +9,7 @@ import Pagination from "react-js-pagination";
 export default function UserDeatail() {
   const param = useParams().userId;
   const [page, setPage] = useState(1);
-  const [items, setItems] = useState(10);
+  const [items] = useState(10);
   const {
     isLoading,
     error,

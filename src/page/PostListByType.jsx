@@ -12,7 +12,7 @@ import "./PostListByType.css";
 export default function PostListByType() {
   const param = useParams().type;
   const [page, setPage] = useState(1);
-  const [items, setItems] = useState(10);
+  const [items] = useState(10);
   const {
     isLoading,
     error,

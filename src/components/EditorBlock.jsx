@@ -1,29 +1,31 @@
-import React, { useRef, useState } from "react";
-import { Editor } from "@toast-ui/react-editor";
-import "@toast-ui/editor/dist/toastui-editor.css";
-import "@toast-ui/editor/dist/i18n/ko-kr";
-import colorSyntax from "@toast-ui/editor-plugin-color-syntax";
-import "tui-color-picker/dist/tui-color-picker.css";
-import "@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css";
+import React, { useMemo, useRef, useState } from "react";
 import { uploadImage } from "../api/UploadImage";
 import { addPost } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
 import { v4 as uuid } from "uuid";
 import { useNavigate } from "react-router-dom";
-import "./EditorBlock.module.css";
+import "./EditorBlock.css";
 import SubmitButton from "./SubmitButton";
 import Spinner from "./Spinner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+import ImageResize from "@looop/quill-image-resize-module-react";
+import Quill from "quill";
+import SpinnerMic from "./SpinnerMic";
+Quill.register("modules/ImageResize", ImageResize);
 
 export default function EditorBlock() {
   const [text, setText] = useState("");
   const [postInfo, setPostInfo] = useState();
   const [isUploading, setIsUploading] = useState(false);
+  const [imageLoding, setImageLoding] = useState(false);
+
   const postId = uuid();
   const { user } = useAuthContext();
   const navigate = useNavigate();
 
-  const editorRef = useRef();
+  const quillRef = useRef();
 
   const queryClient = useQueryClient();
 
@@ -32,9 +34,8 @@ export default function EditorBlock() {
     { onSuccess: () => queryClient.invalidateQueries(["post"]) }
   );
 
-  const onChange = () => {
-    const data = editorRef.current.getInstance().getHTML();
-    setText(data);
+  const onChange = (text) => {
+    setText(text);
   };
 
   const handleChange = (e) => {
@@ -42,15 +43,26 @@ export default function EditorBlock() {
     setPostInfo((item) => ({ ...item, [name]: value }));
   };
 
-  const onUploadImage = async (blob, callback) => {
-    setIsUploading(true);
-    uploadImage(blob).then((data) => {
-      const { url } = data;
-      callback(url, "");
-      setIsUploading(false);
+  const onUploadImage = async () => {
+    const input = document.createElement("input");
+    // 속성 써주기
+    input.setAttribute("type", "file");
+    input.setAttribute("accept", "image/*");
+    input.click();
+    input.addEventListener("change", async () => {
+      setImageLoding(true);
+      const file = input.files[0];
+      uploadImage(file).then((data) => {
+        const { url } = data;
+        const editor = quillRef.current.getEditor();
+        const range = editor.getSelection();
+        editor.insertEmbed(range.index, "image", url);
+        setImageLoding(false);
+      });
     });
     // return false;
   };
+
   const sendPost = (e) => {
     e.preventDefault();
     if (text === "") {
@@ -69,6 +81,71 @@ export default function EditorBlock() {
       );
     }
   };
+
+  const modules = useMemo(() => {
+    return {
+      toolbar: {
+        container: [
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          [{ font: [] }],
+          [{ align: [] }],
+          ["bold", "italic", "underline", "strike", "blockquote"],
+          [{ list: "ordered" }, { list: "bullet" }, "link"],
+          [
+            {
+              color: [
+                "#000000",
+                "#e60000",
+                "#ff9900",
+                "#ffff00",
+                "#008a00",
+                "#0066cc",
+                "#9933ff",
+                "#ffffff",
+                "#facccc",
+                "#ffebcc",
+                "#ffffcc",
+                "#cce8cc",
+                "#cce0f5",
+                "#ebd6ff",
+                "#bbbbbb",
+                "#f06666",
+                "#ffc266",
+                "#ffff66",
+                "#66b966",
+                "#66a3e0",
+                "#c285ff",
+                "#888888",
+                "#a10000",
+                "#b26b00",
+                "#b2b200",
+                "#006100",
+                "#0047b2",
+                "#6b24b2",
+                "#444444",
+                "#5c0000",
+                "#663d00",
+                "#666600",
+                "#003700",
+                "#002966",
+                "#3d1466",
+                "custom-color",
+              ],
+            },
+            { background: [] },
+          ],
+          ["image", "video"],
+          ["clean"],
+        ],
+        handlers: {
+          // handlers object will be merged with default handlers object
+          image: onUploadImage,
+        },
+      },
+      ImageResize: { modules: ["Resize"] },
+    };
+  }, []);
+
   return (
     <>
       <form onSubmit={sendPost}>
@@ -104,24 +181,10 @@ export default function EditorBlock() {
           <option value="creation">창작 시</option>
           <option value="etc">부스러기</option>
         </select>
-        <Editor
-          initialValue=""
-          previewStyle="vertical"
-          height="500px"
-          initialEditType="wysiwyg"
-          useCommandShortcut={false}
-          language="ko-KR"
-          ref={editorRef}
-          onChange={onChange}
-          hideModeSwitch={true}
-          plugins={[colorSyntax]}
-          placeholder="내용을 입력해보세요"
-          hooks={{
-            addImageBlobHook: onUploadImage,
-          }}
-          extendedAutolinks={true}
-          autofocus={false}
-        />
+        <div className="relative">
+          {imageLoding && <SpinnerMic text="댓글 다는 중..." />}
+          <ReactQuill onChange={onChange} modules={modules} ref={quillRef} />
+        </div>
         {isUploading && <Spinner />}
         <div className="mt-4 flex">
           <SubmitButton text="글 작성" />

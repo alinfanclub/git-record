@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
 import LoginButton from "../LoginButton";
 import UserProfile from "../UserProfile";
 import { BsPencilSquare } from "react-icons/bs";
-import { BsBell } from "react-icons/bs";
-import { getPostData } from "../../api/firebase";
-import { useQuery } from "@tanstack/react-query";
+// import { BsBell } from "react-icons/bs";
+// import { getPostData } from "../../api/firebase";
+// import { useQuery } from "@tanstack/react-query";
 import AlertList from "../AlertList";
 
 export default function Header() {
   const { user, login, logout } = useAuthContext();
   const [side, setSide] = useState(false);
   const [alertPop, setAlertPop] = useState(false);
-  const [alert, setAlert] = useState([]);
+  // const [alert, setAlert] = useState([]);
   const sideToggle = () => {
     setSide(!side);
     setAlertPop(false);
@@ -22,20 +22,15 @@ export default function Header() {
     setAlertPop(!alertPop);
     setSide(false);
   };
-  const { data: post } = useQuery(
-    ["postAlert"],
-    async () => await getPostData()
-  );
-  useEffect(() => {
-    if (user) {
-      post &&
-        setAlert(
-          post
-            .filter((post) => post.userInfo.userUid === user.uid)
-            .filter((post) => post.readCheck === false)
-        );
-    }
-  }, [post, user]);
+  // const { data: post } = useQuery(
+  //   ["postAlert"],
+  //   async () => await getPostData()
+  // );
+  // useEffect(() => {
+  //   if (user) {
+  //     post && setAlert(post.filter((post) => post.readCheck === false));
+  //   }
+  // }, [post, user]);
   return (
     <header className="w-full flex justify-between border-b border-gray-300 p-2 items-center sticky top-0 bg-white mb-4 z-50">
       <Link to={"/"}>
@@ -47,7 +42,7 @@ export default function Header() {
             <BsPencilSquare className="text-2xl" />
           </Link>
         )}
-        <div>
+        {/* <div>
           {user && (
             <div className="relative mr-5" onClick={alertToggle}>
               <BsBell className="text-xl" />
@@ -58,7 +53,7 @@ export default function Header() {
               }
             </div>
           )}
-        </div>
+        </div> */}
 
         {alertPop && (
           <div className="block absolute top-16 bg-white border border-grey py-5 px-10 right-4">

@@ -13,14 +13,16 @@ export default function PostCard({
   const navigate = useNavigate();
   const { user } = useAuthContext();
   return (
-    <li
-      className="flex items-centr flex-col justify-between border-b border-t border-gray-300 p-4 cursor-pointer"
-      onClick={() => {
-        navigate(`/post/${id}`);
-      }}
-    >
+    <li className="flex items-centr flex-col justify-between border-b border-t border-gray-300 p-4 cursor-pointer">
       <div className="max-[300px]:flex-col max-[300px]:items-start max-[300px]:gap-2  flex items-center gap-4 mb-4 sm:mb-0 relative sm:items-center">
-        <span className="max-[300px]:max-w-s max-[300px]:truncate max-w-ssm">{title}</span>
+        <span
+          className="max-[300px]:max-w-s max-[300px]:truncate max-w-ssm"
+          onClick={() => {
+            navigate(`/post/${id}`);
+          }}
+        >
+          {title}
+        </span>
         <span className="flex gap-4">
           <small className="text-stone-600 font-light">
             {type
@@ -33,7 +35,9 @@ export default function PostCard({
                 : "미분류"
               : null}
           </small>
-          <small className="text-stone-600 font-light">{formatAgo(createdAt, "ko")}</small>
+          <small className="text-stone-600 font-light">
+            {formatAgo(createdAt, "ko")}
+          </small>
         </span>
         <small className="absolute top-1/2 -translate-y-1/2 -left-6 sm:relative sm:translate-y-0 sm:top-0 sm:-left-0">
           {user &&
@@ -46,11 +50,20 @@ export default function PostCard({
         </small>
       </div>
       <div className="flex items-center gap-4 ml-auto">
-        <p>{userInfo.userName}</p>
+        <p
+          onClick={() => {
+            navigate(`/user/${userInfo.userUid}`);
+          }}
+        >
+          {userInfo.userName}
+        </p>
         <img
           src={userInfo.userProfile}
           alt={userInfo.displayName}
           className="w-10 h-10 rounded-full max-[300px]:hidden"
+          onClick={() => {
+            navigate(`/user/${userInfo.userUid}`);
+          }}
         />
         <div className="flex items-center gap-2">
           <AiTwotoneHeart />

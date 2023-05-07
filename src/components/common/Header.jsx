@@ -83,8 +83,8 @@ export default function Header() {
                   <Link to="/post/new" className="" replace>
                     <BsPencilSquare className="text-2xl" />
                   </Link>
-                  <LoginButton text={"logout"} onClick={logout} />
                   <Link to={`/user/${user.uid}`}>내가 쓴 글</Link>
+                  <LoginButton text={"logout"} onClick={logout} />
                 </div>
               </div>
             )}

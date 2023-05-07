@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Viewer } from "@toast-ui/react-editor";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatAgo } from "../util/timeago";
 import "./PostDetail.module.css";
@@ -21,7 +20,7 @@ import CommentCreate from "../components/CommentCreate";
 import Comments from "../components/Comments";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // import { useQuery } from "@tanstack/react-query";
-
+import "react-quill/dist/quill.snow.css";
 export default function PostDetail() {
   // const {
   //   state: { postTime },
@@ -196,7 +195,12 @@ export default function PostDetail() {
             <small>{post && post.author ? post.author : "작가 불명"}</small>
           </div>
         </div>
-        {text && <Viewer initialValue={text && text.text}></Viewer>}
+        {text && (
+          <div
+            className="ql-editor"
+            dangerouslySetInnerHTML={{ __html: text.text }}
+          />
+        )}
         <div className="mt-20 flex items-center gap-2 justify-end">
           <span onClick={handleHeartToggle}>
             {userLike &&

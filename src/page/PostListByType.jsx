@@ -42,6 +42,8 @@ export default function PostListByType() {
               ? "모든 추천시 들"
               : param === "etc"
               ? "모든 부스러기 들"
+              : param === "notice"
+              ? "공지사항"
               : "미분류"
             : null}
         </h2>

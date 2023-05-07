@@ -184,6 +184,7 @@ export default function UpdatePost() {
           <option value="recomend">추천 시</option>
           <option value="creation">창작 시</option>
           <option value="etc">부스러기</option>
+          {user.isAdmin && <option value="notice">공지사항</option>}
         </select>
         <div className="relative">
           {imageLoding && <SpinnerMic text="댓글 다는 중..." />}

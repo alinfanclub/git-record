@@ -92,6 +92,27 @@ export default function PostList() {
               .map((post) => <PostCard key={post.id} post={post} />)}
         </ul>
       </div>
+      <div className="">
+        <div className="mb-4 flex items-end gap-4">
+          <div className="">
+            공지사항 <small>최신 5개</small>
+          </div>
+          <Link
+            to="post/notice/list"
+            className="cursor-pointer text-neutral-400 text-xs hover:text-neutral-500"
+          >
+            더보기
+          </Link>
+        </div>
+        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl">
+          {post &&
+            post
+              .filter((post) => post.type === "notice")
+              .sort((a, b) => b.createdAt - a.createdAt)
+              .slice(0, 5)
+              .map((post) => <PostCard key={post.id} post={post} />)}
+        </ul>
+      </div>
 
       {/* 팝업 */}
       {cookie[COOKIE_KEY] ? null : <WelcomePop closeModal={closeModal} />}

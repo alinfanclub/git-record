@@ -92,6 +92,17 @@ export async function getPostDataForUsername(params) {
       return [];
     });
 }
+export async function getUserThumbnail(params) {
+  return get(ref(database, "post")) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return Object.values(snapshot.val()).find(
+          (post) => post.userInfo.userUid === params
+        );
+      }
+      return [];
+    });
+}
 export async function getPostDataDetail(id) {
   return get(ref(database, `post/${id}`)) //
     .then((snapshot) => {

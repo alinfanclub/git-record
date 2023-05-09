@@ -86,7 +86,6 @@ export default function EditorBlock() {
       toolbar: {
         container: [
           [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          [{ font: ["serif", "sanserif"] }],
           [{ align: [] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
           [{ list: "ordered" }, { list: "bullet" }, "link"],

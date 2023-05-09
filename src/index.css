@@ -25,6 +25,24 @@ code {
 .popup_text {
   gap: 1vw;
 }
+h1 {
+  font-size: xx-large;
+}
+h2 {
+  font-size: x-large;
+}
+h3 {
+  font-size: larger;
+}
+h4 {
+  font-size: medium;
+}
+h5 {
+  font-size: small;
+}
+h6 {
+  font-size: x-small;
+}
 
 #commentList > li:nth-child(n + 1) {
   border-bottom: 1px solid #ddd;

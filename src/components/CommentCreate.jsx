@@ -96,7 +96,7 @@ export default function CommentCreate() {
       toolbar: {
         container: [
           [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          [{ font: [] }],
+
           [{ align: [] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
           [{ list: "ordered" }, { list: "bullet" }, "link"],

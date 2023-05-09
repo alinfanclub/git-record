@@ -87,7 +87,7 @@ h6 {
 .toastui-editor-contents *:not(table) {
   font-family: "Gowun Dodum", sans-serif;
 }
-.ql-editor {
+.ql-editor, .ql-editor .ql-font-serif {
   font-family: "Gowun Dodum", sans-serif;
   padding: 0;
 }

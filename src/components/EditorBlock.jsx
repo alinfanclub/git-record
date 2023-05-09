@@ -4,7 +4,6 @@ import { addPost } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
 import { v4 as uuid } from "uuid";
 import { useNavigate } from "react-router-dom";
-import "./EditorBlock.css";
 import SubmitButton from "./SubmitButton";
 import Spinner from "./Spinner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -87,7 +86,7 @@ export default function EditorBlock() {
       toolbar: {
         container: [
           [{ header: [1, 2, 3, 4, 5, 6, false] }],
-          [{ font: [] }],
+          [{ font: ["serif", "sanserif"] }],
           [{ align: [] }],
           ["bold", "italic", "underline", "strike", "blockquote"],
           [{ list: "ordered" }, { list: "bullet" }, "link"],
@@ -183,7 +182,12 @@ export default function EditorBlock() {
         </select>
         <div className="relative">
           {imageLoding && <SpinnerMic text="댓글 다는 중..." />}
-          <ReactQuill onChange={onChange} modules={modules} ref={quillRef} />
+          <ReactQuill
+            onChange={onChange}
+            modules={modules}
+            ref={quillRef}
+            className="min-h-[30vh] h-[fit-content]"
+          />
         </div>
         {isUploading && <Spinner />}
         <div className="mt-4 flex">

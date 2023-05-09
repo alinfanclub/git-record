@@ -69,6 +69,13 @@ code {
 .toastui-editor-contents *:not(table) {
   font-family: "Gowun Dodum", sans-serif;
 }
+.ql-editor {
+  font-family: "Gowun Dodum", sans-serif;
+  padding: 0;
+}
+.ql-editor {
+  min-height: 30vh;
+}
 
 .subComments li:nth-child(n + 2) {
   @apply border-t-2 border-dashed;

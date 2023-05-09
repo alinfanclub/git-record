@@ -1,5 +1,5 @@
-import { Viewer } from "@toast-ui/react-editor";
 import React, { useEffect, useState } from "react";
+import { Viewer } from "@toast-ui/react-editor";
 import { deleteComments } from "../api/firebase";
 import { AiFillDelete } from "react-icons/ai";
 import { BiDownArrow } from "react-icons/bi";

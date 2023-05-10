@@ -24,6 +24,7 @@ export default function Comments() {
                     key={obj.commentId}
                     commentData={obj}
                     param={param}
+                    fixed={obj.fixed}
                   />
                 ))}
           </ul>

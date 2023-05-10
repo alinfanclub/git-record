@@ -133,7 +133,7 @@ export async function UserChekFalse(id) {
   });
 }
 
-// ! comments
+// ! Hearts
 export async function addUserLike(id, user) {
   return set(ref(database, `post/${id}/userLike/${user.uid}`), {
     user: user.uid,
@@ -208,20 +208,21 @@ export async function getComments(Postid) {
       return Object.values(comment);
     });
 }
-// // ~ 게시글 수정하기
-// // TODO 구현 안하고 무조건 삭제 하게끔 할지 고민 필요
-// export async function updateComment(comment, user, postId, commnetId) {
-//   return set(ref(database, `post/${postId}/comments/${commnetId}`), {
-//     comment,
-//     createdAt: serverTimestamp(),
-//   });
-// }
+
+// ~ 댓글 수정하기
+export async function updateComment(text, postId, commnetId) {
+  return update(ref(database, `post/${postId}/comments/${commnetId}`), {
+    comment: text,
+    fixed: true,
+  });
+}
 
 // ~ 댓글 삭제하기
 export async function deleteComments(postId, commentId) {
   remove(ref(database, `post/${postId}/comments/${commentId}`));
 }
 
+// ! 대 댓글
 // ! 대 댓글
 
 // 대 댓글 작성
@@ -252,6 +253,16 @@ export async function getSubComments(Postid, commentId) {
       return Object.values(comment);
     });
 }
+export async function updateSubComments(Postid, commentId, subId, text) {
+  return update(
+    ref(database, `post/${Postid}/comments/${commentId}/subcomments/${subId}`),
+    {
+      comment: text,
+      fixed: true,
+    }
+  );
+}
+
 export async function romoveSubCommentDetail(Postid, commentId, SubCommentId) {
   return remove(
     ref(

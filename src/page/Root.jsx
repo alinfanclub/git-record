@@ -5,6 +5,8 @@ import Footer from "../components/common/Footer";
 import Header from "../components/common/Header";
 import { AuthContextProvier } from "../context/AuthContext";
 import ScrollToTop from "./ScrollToTop";
+import { DarkModeProvider } from "../context/DarkModeContext";
+import WriteButton from "../components/WriteButton";
 
 export default function Root() {
   const queryClient = new QueryClient();
@@ -12,10 +14,13 @@ export default function Root() {
     <div>
       <QueryClientProvider client={queryClient}>
         <AuthContextProvier>
-          <ScrollToTop />
-          <Header />
-          <Outlet />
-          <Footer />
+          <DarkModeProvider>
+            <ScrollToTop />
+            <Header />
+            <Outlet />
+            <Footer />
+            <WriteButton />
+          </DarkModeProvider>
         </AuthContextProvier>
       </QueryClientProvider>
     </div>

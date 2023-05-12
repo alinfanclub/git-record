@@ -8,20 +8,14 @@ import { BsPencilSquare } from "react-icons/bs";
 // import { getPostData } from "../../api/firebase";
 // import { useQuery } from "@tanstack/react-query";
 import AlertList from "../AlertList";
+import { useDarkModeContext } from "../../context/DarkModeContext";
 
 export default function Header() {
-  const { user, login, logout } = useAuthContext();
-  const [side, setSide] = useState(false);
+  const {darkMode, setDarkMode} = useDarkModeContext();
+  const { user, login } = useAuthContext();
   const [alertPop, setAlertPop] = useState(false);
   // const [alert, setAlert] = useState([]);
-  const sideToggle = () => {
-    setSide(!side);
-    setAlertPop(false);
-  };
-  const alertToggle = () => {
-    setAlertPop(!alertPop);
-    setSide(false);
-  };
+
   // const { data: post } = useQuery(
   //   ["postAlert"],
   //   async () => await getPostData()
@@ -32,16 +26,11 @@ export default function Header() {
   //   }
   // }, [post, user]);
   return (
-    <header className="w-full flex justify-between border-b border-gray-300 p-2 items-center sticky top-0 bg-white mb-4 z-50">
+    <header className="w-full flex justify-between border-b border-gray-300 p-2 items-center sticky top-0 bg-white mb-4 z-50 sm:px-[4.5rem]">
       <Link to={"/"}>
         <img src={`${process.env.PUBLIC_URL}/logo.png`} alt="logo" />
       </Link>
       <div className="flex items-center">
-        {user && (
-          <Link to="/post/new" className="mr-5 hidden sm:block">
-            <BsPencilSquare className="text-2xl" />
-          </Link>
-        )}
         {/* <div>
           {user && (
             <div className="relative mr-5" onClick={alertToggle}>
@@ -55,7 +44,7 @@ export default function Header() {
           )}
         </div> */}
 
-        {alertPop && (
+        {/* {alertPop && (
           <div className="block absolute top-16 bg-white border border-grey py-5 px-10 right-4">
             {alert.length === 0 ? (
               <p>없어요!</p>
@@ -70,33 +59,20 @@ export default function Header() {
               </div>
             )}
           </div>
-        )}
+        )} */}
         {user && (
           <div
-            className="relartive flex items-center sm:mr-6"
-            onClick={sideToggle}
+            className=""
           >
             <UserProfile user={user} />
-            {side && (
-              <div className="block sm:hidden absolute top-16 bg-white border border-grey py-5 px-10 right-4">
-                <div className="flex gap-4 items-center flex-col">
-                  <Link to="/post/new" className="" replace>
-                    <BsPencilSquare className="text-2xl" />
-                  </Link>
-                  <Link to={`/user/${user.uid}`}>내가 쓴 글</Link>
-                  <LoginButton text={"logout"} onClick={logout} />
-                </div>
-              </div>
-            )}
-            <div className="hidden sm:block">
-              <Link to={`/user/${user.uid}`}>내가 쓴 글</Link>
-            </div>
+            
+            
           </div>
         )}
         {!user && <LoginButton text={"login"} onClick={login} />}
-        <div className="hidden sm:block">
+        {/* <div className="hidden sm:block">
           {user && <LoginButton text={"logout"} onClick={logout} />}
-        </div>
+        </div> */}
       </div>
     </header>
   );

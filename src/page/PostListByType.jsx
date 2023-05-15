@@ -33,8 +33,8 @@ export default function PostListByType() {
     <>
       {error && <NotFound />}
       {isLoading && <Spinner />}
-      <div className="p-4 sm:px-8 flex gap-10 flex-col mx-auto min-h-screen">
-        <h2 className="text-center text-xl font-medium">
+      <div className="p-4 sm:px-8 flex gap-10 flex-col mx-auto min-h-screen ">
+        <h2 className="text-center text-xl font-medium dark:text-white">
           {param
             ? param === "creation"
               ? "모든 창작시 들"
@@ -47,7 +47,7 @@ export default function PostListByType() {
               : "미분류"
             : null}
         </h2>
-        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4">
+        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 dark:bg-gray-700 p-4">
           {Post &&
             Post.slice(items * (page - 1), items * (page - 1) + items).map(
               (post, index) => <PostCard key={post.id} post={post} />

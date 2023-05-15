@@ -2,8 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --color-font: #333;
+html.dark body {
+  background-color: rgb(31, 41, 55);
 }
 #root {
   @apply w-full;
@@ -51,43 +51,15 @@ h6 {
   border-bottom: 0;
 }
 
-@media only screen and (max-width: 480px) {
-  .toastui-editor-popup {
-    margin-left: 0 !important;
-    z-index: 9999;
-  }
-  /* .toastui-editor-dropdown-toolbar {
-    flex-wrap: wrap;
-    height: fit-content !important;
-  } */
-  /* .toastui-editor-toolbar {
-    position: fixed;
-    top: 0.4rem;
-    right: 5rem;
-    width: 50px;
-    z-index: 999;
-    border: 1px solid #ebedf2;
-  } */
-  /* .toastui-editor-dropdown-toolbar {
-    width: 212px;
-    overflow: hidden;
-  } */
-  .toastui-editor-defaultUI-toolbar {
-    padding: 0 0 !important;
-    height: auto;
-    justify-content: center;
-  }
-}
-
-.test {
-  transition: all 1s;
-}
-
 #detailFont,
 .toastui-editor-contents *:not(table) {
   font-family: "Gowun Dodum", sans-serif;
 }
-.ql-editor, .ql-editor .ql-font-serif {
+.ql-container {
+  font-size: 18px;
+}
+.ql-editor,
+.ql-editor .ql-font-serif {
   font-family: "Gowun Dodum", sans-serif !important;
   padding: 0;
 }
@@ -97,4 +69,56 @@ h6 {
 
 .subComments li:nth-child(n + 2) {
   @apply border-t-2 border-dashed;
+}
+
+html.dark .pagination li {
+  color: #333;
+  background-color: rgb(156, 163, 175);
+  border-radius: 50%;
+}
+html.dark .pagination li a {
+  color: #fff;
+}
+html.dark ul.pagination li:first-child,
+html.dark ul.pagination li:last-child {
+  border-radius: 50%;
+}
+html.dark ul.pagination li.active {
+  background-color: #fff;
+}
+html.dark ul.pagination li.active a {
+  color: #333;
+}
+
+html.dark .ql-toolbar.ql-snow .ql-formats svg {
+  background-color: #fff;
+}
+/* html.dark .ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  background-color: #fff;
+} */
+html.dark .ql-snow .ql-picker {
+  background-color: #fff;
+}
+html.dark .ql-snow .ql-picker-label,
+html.dark .ql-snow .ql-picker-options span {
+  color: #333;
+}
+html.dark .ql-editor.viewer {
+  color: #fff;
+  line-height: 2.8rem;
+  background-color: rgb(31, 41, 55);
+}
+html.dark .ql-editor.viewer span {
+  color: #fff;
+}
+html.dark .ql-editor {
+  color: #fff;
+  line-height: 1.8rem;
+  background-color: rgb(17, 24, 49);
+}
+html.dark .ql-toolbar.ql-snow {
+  background-color: rgb(43, 48, 65);
+}
+html.dark .toastui-editor-contents *:not(table) {
+  color: #fff;
 }

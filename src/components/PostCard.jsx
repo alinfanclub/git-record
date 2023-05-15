@@ -13,10 +13,10 @@ export default function PostCard({
   const navigate = useNavigate();
   const { user } = useAuthContext();
   return (
-    <li className="flex items-centr flex-col justify-between border-b border-t border-gray-300 p-4 cursor-pointer">
+    <li className="flex items-centr flex-col justify-between border-b border-t border-gray-300 p-4 cursor-pointe">
       <div className="max-[300px]:flex-col max-[300px]:items-start max-[300px]:gap-2  flex items-center gap-4 mb-4 sm:mb-0 relative sm:items-center">
         <span
-          className="max-[300px]:max-w-s max-[300px]:truncate max-w-ssm"
+          className="max-[300px]:max-w-s max-[300px]:truncate max-w-ssm dark:text-white"
           onClick={() => {
             navigate(`/post/${id}`);
           }}
@@ -24,7 +24,7 @@ export default function PostCard({
           {title}
         </span>
         <span className="flex gap-4">
-          <small className="text-stone-600 font-light">
+          <small className="text-stone-600 font-light dark:text-white">
             {type
               ? type === "creation"
                 ? "창작시"
@@ -32,10 +32,12 @@ export default function PostCard({
                 ? "추천시"
                 : type === "etc"
                 ? "부스러기"
+                : type === "notice"
+                ? "공지사항"
                 : "미분류"
               : null}
           </small>
-          <small className="text-stone-600 font-light">
+          <small className="text-stone-600 font-light dark:text-white">
             {formatAgo(createdAt, "ko")}
           </small>
         </span>
@@ -54,6 +56,7 @@ export default function PostCard({
           onClick={() => {
             navigate(`/user/${userInfo.userUid}`);
           }}
+          className="dark:text-white"
         >
           {userInfo.userName}
         </p>
@@ -65,13 +68,13 @@ export default function PostCard({
             navigate(`/user/${userInfo.userUid}`);
           }}
         />
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 dark:text-white">
           <AiTwotoneHeart />
           <span>
             {post.userLike ? Object.values(post.userLike).length : "0"}
           </span>
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 dark:text-white ">
           <BiCommentDetail />
           <span>
             {post.comments ? Object.values(post.comments).length : "0"}

@@ -4,18 +4,21 @@ import { Outlet } from "react-router-dom";
 import Footer from "../components/common/Footer";
 import Header from "../components/common/Header";
 import { AuthContextProvier } from "../context/AuthContext";
-import ScrollToTop from "./ScrollToTop";
+import { DarkModeProvider } from "../context/DarkModeContext";
+import WriteButton from "../components/WriteButton";
 
 export default function Root() {
   const queryClient = new QueryClient();
   return (
-    <div>
+    <div className="bg-[color:var(--color-bg-dark)]">
       <QueryClientProvider client={queryClient}>
         <AuthContextProvier>
-          <ScrollToTop />
-          <Header />
-          <Outlet />
-          <Footer />
+          <DarkModeProvider>
+            <Header />
+            <Outlet />
+            <Footer />
+            <WriteButton />
+          </DarkModeProvider>
         </AuthContextProvier>
       </QueryClientProvider>
     </div>

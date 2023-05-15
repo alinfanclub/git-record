@@ -22,3 +22,4 @@ export function AuthContextProvier({ children }) {
 export function useAuthContext() {
   return useContext(AuthContext);
 }
+

@@ -26,22 +26,22 @@ export default function PostList() {
     });
   };
   return (
-    <section className="p-4 sm:px-8 flex gap-10 flex-col mx-auto">
+    <section className="p-4 sm:px-8 flex gap-10 flex-col mx-auto min-h-screen">
       {isLoading && <Spinner />}
       {error && <p>error!</p>}
       <div className="">
         <div className="mb-4 flex items-end gap-4">
-          <div className="">
+          <div className="dark:text-white">
             창작 시 <small>최신 5개</small>
           </div>
           <Link
             to="post/creation/list"
-            className="cursor-pointer text-neutral-400 text-xs hover:text-neutral-500"
+            className="cursor-pointer dark:text-neutral-300 text-xs dark:hover:text-neutral-200"
           >
             더보기
           </Link>
         </div>
-        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl">
+        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl dark:bg-gray-700">
           {post &&
             post
               .filter((post) => post.type === "creation")
@@ -52,17 +52,17 @@ export default function PostList() {
       </div>
       <div className="">
         <div className="mb-4 flex items-end gap-4">
-          <div className="">
+          <div className="dark:text-white">
             추천 시 <small>최신 5개</small>
           </div>
           <Link
             to="post/recomend/list"
-            className="cursor-pointer text-neutral-400 text-xs hover:text-neutral-500"
+            className="cursor-pointer dark:text-neutral-300 text-xs dark:hover:text-ne"
           >
             더보기
           </Link>
         </div>
-        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl">
+        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl dark:bg-gray-700">
           {post &&
             post
               .filter((post) => post.type === "recomend")
@@ -73,17 +73,17 @@ export default function PostList() {
       </div>
       <div className="">
         <div className="mb-4 flex items-end gap-4">
-          <div className="">
+          <div className="dark:text-white">
             부스러기들 <small>최신 5개</small>
           </div>
           <Link
             to="post/etc/list"
-            className="cursor-pointer text-neutral-400 text-xs hover:text-neutral-500"
+            className="cursor-pointer dark:text-neutral-300 text-xs dark:hover:text-ne"
           >
             더보기
           </Link>
         </div>
-        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl">
+        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl dark:bg-gray-700">
           {post &&
             post
               .filter((post) => post.type === "etc")
@@ -94,17 +94,17 @@ export default function PostList() {
       </div>
       <div className="">
         <div className="mb-4 flex items-end gap-4">
-          <div className="">
+          <div className="dark:text-white">
             공지사항 <small>최신 5개</small>
           </div>
           <Link
             to="post/notice/list"
-            className="cursor-pointer text-neutral-400 text-xs hover:text-neutral-500"
+            className="cursor-pointer dark:text-neutral-300 text-xs dark:hover:text-ne"
           >
             더보기
           </Link>
         </div>
-        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl">
+        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl dark:bg-gray-700">
           {post &&
             post
               .filter((post) => post.type === "notice")

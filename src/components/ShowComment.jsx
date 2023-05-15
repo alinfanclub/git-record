@@ -196,20 +196,20 @@ export default function ShowComment({
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="flex items-center gap-4">
-            <div>{userInfo.userName}</div>
+            <div className="dark:text-white">{userInfo.userName}</div>
             <img
               src={userInfo.userProfile}
               alt=""
               className="w-10 h-10 rounded-full mr-2"
             />
           </div>
-          <span className="text-xs">
+          <span className="text-xs dark:text-white">
             ({formatAgo(commentData.createdAt, "ko")})
           </span>
           <span className="text-xs">{fixed && "수정됨"}</span>
         </div>
         {user && user.uid === userInfo.userUid && (
-          <div className="flex gap-4">
+          <div className="flex gap-4 dark:text-white">
             <AiFillDelete onClick={deleteComment} className="cursor-pointer" />
             <MdOutlineAutoFixHigh
               onClick={() => setCommentFix(!commentFix)}
@@ -218,7 +218,7 @@ export default function ShowComment({
           </div>
         )}
       </div>
-      <div className="bg-neutral-50 rounded-xl py-10 px-4 my-2">
+      <div className="bg-neutral-50 rounded-xl py-10 px-4 my-2 dark:bg-gray-700">
         {!commentFix && <Viewer initialValue={comment} />}
         {commentFix && (
           <form onSubmit={update}>
@@ -249,7 +249,7 @@ export default function ShowComment({
               <div className={showAllSubComments ? "rotate-180" : "rotate-0"}>
                 <BiDownArrow className="text-xs" />
               </div>
-              <p className="mr-4 text-xs flex items-center">
+              <p className="mr-4 text-xs flex items-center dark:text-white">
                 {showAllSubComments
                   ? "댓글 숨기기"
                   : sub
@@ -258,7 +258,10 @@ export default function ShowComment({
               </p>
             </div>
           )}
-          <p className="text-xs cursor-pointer" onClick={toggleSubComment}>
+          <p
+            className="text-xs cursor-pointer dark:text-white"
+            onClick={toggleSubComment}
+          >
             답글 달기
           </p>
         </div>

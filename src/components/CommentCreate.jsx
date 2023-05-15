@@ -160,7 +160,6 @@ export default function CommentCreate() {
       <div className="w-11/12 2xl:w-2/5 mx-auto relative">
         <form onSubmit={sendComment} className="relative">
           {isUploading && <SpinnerMic text="댓글 다는 중..." />}
-          <input type="comment" />
           <ReactQuill onChange={onChange} modules={modules} ref={quillRef} />
           <div className="my-4">
             <SubmitButton text="댓글 달기" />

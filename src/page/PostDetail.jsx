@@ -174,9 +174,11 @@ export default function PostDetail() {
                 className="w-10 h-10 rounded-full mr-2 bg-white"
               />
               <div>
-                <p className="mr-2">{post && post.userInfo.userName}</p>
+                <p className="mr-2 dark:text-white">
+                  {post && post.userInfo.userName}
+                </p>
                 {post && (
-                  <small>
+                  <small className="dark:text-white">
                     {time} ({formatAgo(post && post.createdAt, "ko")})
                     {post.fixed && <span className="ml-2">수정됨</span>}
                   </small>
@@ -184,24 +186,28 @@ export default function PostDetail() {
               </div>
             </div>
             {post && user && user.uid === post.userInfo.userUid && (
-              <div className="cursor-pointer flex items-center gap-4">
+              <div className="cursor-pointer flex items-center gap-4  dark:text-white">
                 <AiFillDelete onClick={deletePost} />
                 <MdOutlineAutoFixHigh onClick={gotoUpdate} />
               </div>
             )}
           </div>
           <div className="flex items-end gap-2 my-4" id="detailFont">
-            <h2 className="sm:text-2xl">{post && post.title}</h2>
-            <small>{post && post.author ? post.author : "작가 불명"}</small>
+            <h2 className="sm:text-2xl dark:text-white">
+              {post && post.title}
+            </h2>
+            <small className=" dark:text-white">
+              {post && post.author ? post.author : "작가 불명"}
+            </small>
           </div>
         </div>
         {text && (
           <div
-            className="ql-editor"
+            className="ql-editor viewer"
             dangerouslySetInnerHTML={{ __html: text.text }}
           />
         )}
-        <div className="mt-20 flex items-center gap-2 justify-end">
+        <div className="mt-20 flex items-center gap-2 justify-end mb-5">
           <span onClick={handleHeartToggle}>
             {userLike &&
             user &&
@@ -211,7 +217,7 @@ export default function PostDetail() {
               <FcLikePlaceholder />
             )}
           </span>
-          <span>{userLike && userLike.length}</span>
+          <span className="dark:text-white">{userLike && userLike.length}</span>
         </div>
       </div>
       {/* 댓글 컴포넌트 */}

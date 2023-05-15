@@ -165,18 +165,22 @@ export default function SubCommentCard({ data, param, commentId }) {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <div className="flex items-center gap-4">
-              <div>{data.userInfo.userName}</div>
+              <div className="dark:text-white">{data.userInfo.userName}</div>
               <img
                 src={data.userInfo.userProfile}
                 alt=""
                 className="w-10 h-10 rounded-full mr-2"
               />
             </div>
-            <span className="text-xs">({formatAgo(data.createdAt, "ko")})</span>
-            <span className="text-xs">{data.fixed && "수정됨"}</span>
+            <span className="text-xs dark:text-white">
+              ({formatAgo(data.createdAt, "ko")})
+            </span>
+            <span className="text-xs dark:text-white">
+              {data.fixed && "수정됨"}
+            </span>
           </div>
           {user && user.uid === data.userInfo.userUid && (
-            <div className="flex gap-4">
+            <div className="flex gap-4 dark:text-white">
               <AiFillDelete onClick={deleteSub} className="cursor-pointer" />
               <MdOutlineAutoFixHigh
                 className="cursor-pointer"
@@ -185,7 +189,7 @@ export default function SubCommentCard({ data, param, commentId }) {
             </div>
           )}
         </div>
-        <div className="bg-neutral-50 rounded-xl py-10 px-4 my-2t">
+        <div className="bg-neutral-50 rounded-xl py-10 px-4 my-2t dark:bg-gray-700">
           {!commentFix && <Viewer initialValue={data.comment} />}
           {commentFix && (
             <form onSubmit={update}>

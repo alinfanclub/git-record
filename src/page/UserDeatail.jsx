@@ -47,12 +47,14 @@ export default function UserDeatail() {
               alt={thumb && thumb.userName}
               className="w-20 h-20 rounded-full max-[300px]:hidden"
             />
-            <p className="text-xl font-bold">{thumb && thumb.userName}</p>
-            <span>게시글 갯수 : {postLength}</span>
+            <p className="text-xl font-bold dark:text-white">
+              {thumb && thumb.userName}
+            </p>
+            <span className="dark:text-white">게시글 갯수 : {postLength}</span>
           </div>
           {post && post.map((obj) => obj.userInfo.userUid).includes(param) ? (
             <>
-              <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl">
+              <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl dark:bg-gray-700">
                 {post
                   .slice(items * (page - 1), items * (page - 1) + items)
                   .map((post) => (

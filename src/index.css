@@ -58,17 +58,15 @@ h6 {
 .ql-container {
   font-size: 18px;
 }
-.ql-editor,
+html .ql-editor,
 .ql-editor .ql-font-serif {
   font-family: "Gowun Dodum", sans-serif !important;
-  padding: 0;
-  line-height: 1.8rem;
-}
-.ql-editor {
+  line-height: 2.2rem;
   min-height: 30vh;
+  font-size: 1rem;
 }
-ql-editor.viewer {
-  line-height: 2.8rem;
+.ql-editor.viewer {
+  line-height: 2.2rem;
 }
 
 .subComments li:nth-child(n + 2) {

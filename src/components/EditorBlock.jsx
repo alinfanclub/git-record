@@ -158,7 +158,7 @@ export default function EditorBlock() {
         <input
           type="text"
           id="author"
-          className="p-4 outline-none border border-gray-300 my-1 w-full text-xs sm:text-lg  dark:bg-gray-500/20"
+          className="p-4 outline-none border border-gray-300 my-1 w-full text-xs sm:text-lg  dark:bg-gray-500/20 dark:text-white"
           placeholder={`작가(혹은 본인)를(을) 입력해주세요 ex)${user.displayName}`}
           onChange={handleChange}
           name="author"

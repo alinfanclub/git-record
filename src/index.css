@@ -62,9 +62,13 @@ h6 {
 .ql-editor .ql-font-serif {
   font-family: "Gowun Dodum", sans-serif !important;
   padding: 0;
+  line-height: 1.8rem;
 }
 .ql-editor {
   min-height: 30vh;
+}
+ql-editor.viewer {
+  line-height: 2.8rem;
 }
 
 .subComments li:nth-child(n + 2) {
@@ -105,7 +109,6 @@ html.dark .ql-snow .ql-picker-options span {
 }
 html.dark .ql-editor.viewer {
   color: #fff;
-  line-height: 2.8rem;
   background-color: rgb(31, 41, 55);
 }
 html.dark .ql-editor.viewer span {
@@ -113,7 +116,6 @@ html.dark .ql-editor.viewer span {
 }
 html.dark .ql-editor {
   color: #fff;
-  line-height: 1.8rem;
   background-color: rgb(17, 24, 49);
 }
 html.dark .ql-toolbar.ql-snow {

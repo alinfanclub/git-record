@@ -15,6 +15,7 @@ import {
   serverTimestamp,
   remove,
   update,
+  query,
 } from "firebase/database";
 // import { v4 as uuid } from "uuid";
 
@@ -61,7 +62,8 @@ async function adminUser(user) {
     });
 }
 export async function getPostData() {
-  return get(ref(database, "post")) //
+  const data = query(ref(database, "post"));
+  return get(data) //
     .then((snapshot) => {
       if (snapshot.exists()) {
         return Object.values(snapshot.val());

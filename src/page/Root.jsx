@@ -7,10 +7,14 @@ import { AuthContextProvier } from "../context/AuthContext";
 import { DarkModeProvider } from "../context/DarkModeContext";
 import WriteButton from "../components/WriteButton";
 import ScrollToTop from "./ScrollToTop";
+import SearchPop from "../components/SearchPop";
+import { useModalStore } from "../store/store";
+import { PostListProvider } from "../context/PostListContext";
 
 export default function Root() {
   const queryClient = new QueryClient();
   const location = useLocation().pathname.toString();
+  const searchPop = useModalStore((state) => state.searchPop);
   console.log(location);
 
   return (
@@ -18,11 +22,14 @@ export default function Root() {
       <QueryClientProvider client={queryClient}>
         <AuthContextProvier>
           <DarkModeProvider>
-            <ScrollToTop />
-            <Header />
-            <Outlet />
-            <Footer />
-            {location !== "/post/new" && <WriteButton />}
+            <PostListProvider>
+              <ScrollToTop />
+              <Header />
+              <Outlet />
+              <Footer />
+              {location !== "/post/new" && <WriteButton />}
+              {searchPop && <SearchPop />}
+            </PostListProvider>
           </DarkModeProvider>
         </AuthContextProvier>
       </QueryClientProvider>

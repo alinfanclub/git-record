@@ -6,7 +6,7 @@ import moment from "moment";
 import Spinner from "./Spinner";
 import { Link } from "react-router-dom";
 import WelcomePop from "./common/WelcomePop";
-
+import React from "react";
 export default function PostList() {
   const {
     isLoading,
@@ -25,6 +25,8 @@ export default function PostList() {
       expires: decade.toDate(),
     });
   };
+
+  console.log(post);
   return (
     <section className="p-4 sm:px-8 flex gap-10 flex-col mx-auto min-h-screen sm:grid sm:grid-cols-2">
       {isLoading && <Spinner />}

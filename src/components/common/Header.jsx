@@ -9,10 +9,14 @@ import { HiMoon, HiSun } from "react-icons/hi";
 // // import { useQuery } from "@tanstack/react-query";
 // import AlertList from "../AlertList";
 import { useDarkMode } from "../../context/DarkModeContext";
+import { useModalStore } from "../../store/store";
+import { AiOutlineSearch } from "react-icons/ai";
 
 export default function Header() {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const { user, login } = useAuthContext();
+  const openSearchToggle = useModalStore((state) => state.openSearchToggle);
+
   return (
     <header className="w-full flex justify-between border-b border-gray-300 dark:border-gray-500/50 p-2 items-center sticky top-0 bg-white mb-4 z-50 sm:px-[4.5rem] dark:bg-gray-800">
       <Link to={"/"} className="w-56">
@@ -22,7 +26,13 @@ export default function Header() {
           <img src={`${process.env.PUBLIC_URL}/logo_dark.png`} alt="logo" />
         )}
       </Link>
-      <div className="flex items-center gap-6">
+      <div className="flex items-center gap-4">
+        <div
+          onClick={openSearchToggle}
+          className="sm:w-36 sm:bg-white sm:h-8 sm:rounded-2xl sm:px-2 flex items-center sm:border sm:border-gray-500"
+        >
+          <AiOutlineSearch className="dark:text-white dark:sm:text-gray-500" />
+        </div>
         <button onClick={toggleDarkMode} className="dark:text-white">
           {!darkMode && <HiMoon />}
           {darkMode && <HiSun />}

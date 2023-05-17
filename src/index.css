@@ -122,3 +122,16 @@ html.dark .ql-toolbar.ql-snow {
 html.dark .toastui-editor-contents *:not(table) {
   color: #fff;
 }
+
+@media (min-width: 640px) {
+  *::-webkit-scrollbar {
+    width: 7px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 7px;
+  }
+  *::-webkit-scrollbar-track {
+    display: none;
+  }
+}

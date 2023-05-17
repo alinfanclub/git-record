@@ -55,7 +55,7 @@ export default function PostCard({
       </div>
       <div className="max-[300px]:flex-col max-[300px]:items-start max-[300px]:gap-2  flex items-center gap-4 sm:mb-0 relative sm:items-center justify-between w-full">
         <span
-          className="max-[300px]:max-w-s max-[300px]:truncate dark:text-white grow truncate text-lg font-semibold cursor-pointer text-gray-900 max-w-[13.2rem] sm:max-w-none"
+          className="max-[300px]:max-w-s max-[300px]:truncate dark:text-white grow truncate text-lg font-[500] cursor-pointer text-gray-700 max-w-[13.2rem] sm:max-w-none"
           onClick={() => {
             navigate(`/post/${id}`);
           }}

@@ -26,10 +26,10 @@ export default function PostList() {
     });
   };
   return (
-    <section className="p-4 sm:px-8 flex gap-10 flex-col mx-auto min-h-screen">
+    <section className="p-4 sm:px-8 flex gap-10 flex-col mx-auto min-h-screen sm:grid sm:grid-cols-2">
       {isLoading && <Spinner />}
       {error && <p>error!</p>}
-      <div className="">
+      <div className="flex flex-col">
         <div className="mb-4 flex items-end gap-4">
           <div className="dark:text-white">
             창작 시 <small>최신 5개</small>
@@ -41,7 +41,7 @@ export default function PostList() {
             더보기
           </Link>
         </div>
-        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl dark:bg-gray-700">
+        <ul className="flex flex-col bg-neutral-50 p-4 rounded-xl dark:bg-gray-700 grow justify-start">
           {post &&
             post
               .filter((post) => post.type === "creation")
@@ -50,7 +50,7 @@ export default function PostList() {
               .map((post) => <PostCard key={post.id} post={post} />)}
         </ul>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="mb-4 flex items-end gap-4">
           <div className="dark:text-white">
             추천 시 <small>최신 5개</small>
@@ -62,7 +62,7 @@ export default function PostList() {
             더보기
           </Link>
         </div>
-        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl dark:bg-gray-700">
+        <ul className="flex flex-col bg-neutral-50 p-4 rounded-xl dark:bg-gray-700 grow justify-start">
           {post &&
             post
               .filter((post) => post.type === "recomend")
@@ -71,7 +71,7 @@ export default function PostList() {
               .map((post) => <PostCard key={post.id} post={post} />)}
         </ul>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="mb-4 flex items-end gap-4">
           <div className="dark:text-white">
             부스러기들 <small>최신 5개</small>
@@ -83,7 +83,7 @@ export default function PostList() {
             더보기
           </Link>
         </div>
-        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl dark:bg-gray-700">
+        <ul className="flex flex-col bg-neutral-50 p-4 rounded-xl dark:bg-gray-700 grow justify-start">
           {post &&
             post
               .filter((post) => post.type === "etc")
@@ -92,7 +92,7 @@ export default function PostList() {
               .map((post) => <PostCard key={post.id} post={post} />)}
         </ul>
       </div>
-      <div className="">
+      <div className="flex flex-col">
         <div className="mb-4 flex items-end gap-4">
           <div className="dark:text-white">
             공지사항 <small>최신 5개</small>
@@ -104,7 +104,7 @@ export default function PostList() {
             더보기
           </Link>
         </div>
-        <ul className="flex gap-4 flex-col justify-center bg-neutral-50 p-4 rounded-xl dark:bg-gray-700">
+        <ul className="flex flex-col bg-neutral-50 p-4 rounded-xl dark:bg-gray-700 grow justify-start">
           {post &&
             post
               .filter((post) => post.type === "notice")

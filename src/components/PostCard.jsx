@@ -5,6 +5,7 @@ import { AiTwotoneHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { GoPrimitiveDot } from "react-icons/go";
 import { useAuthContext } from "../context/AuthContext";
+import { useModalStore } from "../store/store";
 
 export default function PostCard({
   post,
@@ -12,6 +13,13 @@ export default function PostCard({
 }) {
   const navigate = useNavigate();
   const { user } = useAuthContext();
+
+  const searchClose = useModalStore((state) => state.searchClose);
+
+  const moveDetailPage = (id) => {
+    navigate(`/post/${id}`);
+    searchClose();
+  };
   return (
     <li className=" flex-col items-centr justify-between border-b first:border-t border-gray-300 p-2 cursor-pointe gap-4 py-4 flex ">
       <div className="flex items-center gap-4 ml-auto justify-between w-full">
@@ -57,7 +65,7 @@ export default function PostCard({
         <span
           className="max-[300px]:max-w-s max-[300px]:truncate dark:text-white grow truncate text-lg font-[500] cursor-pointer text-gray-700 max-w-[13.2rem] sm:max-w-none"
           onClick={() => {
-            navigate(`/post/${id}`);
+            moveDetailPage(id);
           }}
         >
           {title}

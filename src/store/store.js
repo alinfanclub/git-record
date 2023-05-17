@@ -8,6 +8,7 @@ export const useSearchStore = create((set) => ({
 export const useModalStore = create((set) => ({
   searchPop: false,
   openSearchToggle: () => set((state) => ({ searchPop: !state.searchPop })),
+  searchClose: () => set(() => ({ searchPop: false })),
 }));
 
 export const PostListStore = create((set) => ({

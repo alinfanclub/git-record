@@ -31,15 +31,15 @@ export default function PostDetail() {
   const navigate = useNavigate();
   const param = useParams().postId;
   const [text, setText] = useState();
+  const [post, setPost] = useState();
   const [time, setTime] = useState();
 
   const queryClient = useQueryClient();
 
-  const {
-    isLoading,
-    error,
-    data: post,
-  } = useQuery(["postDetail"], async () => await getPostDataDetail(param));
+  const { isLoading, error } = useQuery(
+    ["postDetail"],
+    async () => await getPostDataDetail(param)
+  );
 
   const { data: userLike } = useQuery({
     queryKey: ["userLike"],
@@ -48,7 +48,8 @@ export default function PostDetail() {
 
   useEffect(() => {
     getPostDataDetail(param).then((res) => {
-      return setText(res);
+      setText(res);
+      setPost(res);
     });
   }, [param]);
 

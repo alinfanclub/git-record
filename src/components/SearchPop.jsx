@@ -28,6 +28,7 @@ export default function SearchPop() {
                 name="searchText"
                 className="h-full grow focus:border-transparent focus:outline-none px-2 rounded-3xl"
                 placeholder="제목 및 작가명 검색"
+                autoFocus
               />
             </div>
 

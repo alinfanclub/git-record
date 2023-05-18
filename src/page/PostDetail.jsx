@@ -31,13 +31,16 @@ export default function PostDetail() {
   const navigate = useNavigate();
   const param = useParams().postId;
   const [text, setText] = useState();
-  const [post, setPost] = useState();
   const [time, setTime] = useState();
 
   const queryClient = useQueryClient();
 
-  const { isLoading, error } = useQuery(
-    ["postDetail"],
+  const {
+    isLoading,
+    error,
+    data: post,
+  } = useQuery(
+    ["postDetail", param],
     async () => await getPostDataDetail(param)
   );
 
@@ -49,7 +52,6 @@ export default function PostDetail() {
   useEffect(() => {
     getPostDataDetail(param).then((res) => {
       setText(res);
-      setPost(res);
     });
   }, [param]);
 

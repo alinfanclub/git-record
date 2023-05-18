@@ -1,20 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useParams } from "react-router-dom";
 import { getComments } from "../api/firebase";
 import ShowComment from "./ShowComment";
 
 export default function Comments() {
   const param = useParams().postId;
-  const { data: comments } = useQuery(["comments"], () => getComments(param));
-
-  const [commentList, setCommentList] = useState();
-
-  useEffect(() => {
-    getComments(param).then((res) => {
-      setCommentList(res);
-    });
-  }, [param]);
+  const { data: comments } = useQuery(["comments", param], () =>
+    getComments(param)
+  );
   // console.log(comments);
   return (
     <>
@@ -24,8 +18,8 @@ export default function Comments() {
             총 댓글 : {comments.length}
           </h4>
           <ul id="commentList">
-            {commentList &&
-              commentList
+            {comments &&
+              comments
                 .sort((a, b) => a.createdAt - b.createdAt)
                 .map((obj) => (
                   <ShowComment

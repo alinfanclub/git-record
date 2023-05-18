@@ -17,7 +17,7 @@ export default function SearchPop() {
 
   return (
     <>
-      <div className="fixed top-5 left-1/2 -translate-x-1/2 bg-white w-[90%] sm:w-1/2 h-4/5 dark:bg-gray-500 z-[60] rounded-3xl py-4">
+      <div className="fixed top-5 left-1/2 -translate-x-1/2 bg-white w-[90%] sm:w-1/2 h-4/5 dark:bg-gray-500 z-[60] rounded-3xl py-4 shadow-xl">
         <div className="h-full sm:pr-4 flex flex-col">
           <div className="sticky -top-[1px] z-20 flex flex-col items-center gap-2 mb-4 bg-white dark:bg-gray-500 px-4 pt-4">
             <div className="w-full bg-white h-12 rounded-3xl px-2 flex items-center border border-gray-500">

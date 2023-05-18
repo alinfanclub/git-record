@@ -85,18 +85,10 @@ export default function PostDetail() {
     if (post) {
       if (user) {
         if (post.userInfo.userUid === user.uid) {
-          mock.mutate(
-            { param },
-            {
-              onSuccess: () => {
-                console.log("mock");
-              },
-            }
-          );
+          mock.mutate({ param });
         }
       }
     }
-    console.log(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, post, param]);
 

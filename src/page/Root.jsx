@@ -15,7 +15,6 @@ export default function Root() {
   const queryClient = new QueryClient();
   const location = useLocation().pathname.toString();
   const searchPop = useModalStore((state) => state.searchPop);
-  console.log(location);
 
   return (
     <div className="bg-[color:var(--color-bg-dark)]">

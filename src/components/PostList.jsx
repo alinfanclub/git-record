@@ -26,7 +26,6 @@ export default function PostList() {
     });
   };
 
-  console.log(post);
   return (
     <section className="p-4 sm:px-8 flex gap-10 flex-col mx-auto min-h-screen sm:grid sm:grid-cols-2">
       {isLoading && <Spinner />}

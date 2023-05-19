@@ -135,3 +135,20 @@ html.dark .toastui-editor-contents *:not(table) {
     display: none;
   }
 }
+.menuOpen {
+  animation: menuOpen 0.5s;
+}
+
+.m_menu {
+  width: calc(100vw - 20px);
+  height: calc(90vh - 20px);
+  animation: menuOpen 0.5s;
+}
+@keyframes menuOpen {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

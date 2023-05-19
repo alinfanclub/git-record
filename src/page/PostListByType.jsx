@@ -32,6 +32,7 @@ export default function PostListByType() {
 
   const handleSelect = (e) => {
     setSelected(e.target.value);
+    e.target.blur();
   };
 
   return (
@@ -57,7 +58,7 @@ export default function PostListByType() {
             <select
               name="sortType"
               id="sortType"
-              className="outline-none"
+              className="outline-none dark:text-white bg-transparent"
               onChange={handleSelect}
               defaultValue={selected}
             >
@@ -65,6 +66,7 @@ export default function PostListByType() {
               <option value="oldest">오래된 게시물</option>
               <option value="AuthorAtoB">작가 가나다 순</option>
               <option value="like">좋아요 순</option>
+              <option value="view">조회수 순</option>
             </select>
           </div>
           <ul className="flex gap-4 flex-col justify-center bg-neutral-50 dark:bg-gray-700 p-4 w-full">
@@ -99,6 +101,15 @@ export default function PostListByType() {
               Post &&
                 selected === "like" &&
                 Post.sort((a, b) => b.likes - a.likes)
+                  .slice(items * (page - 1), items * (page - 1) + items)
+                  .map(
+                    (post, index) => <PostCard key={post.id} post={post} /> //
+                  ) //
+            }
+            {
+              Post &&
+                selected === "view" &&
+                Post.sort((a, b) => b.views - a.views)
                   .slice(items * (page - 1), items * (page - 1) + items)
                   .map(
                     (post, index) => <PostCard key={post.id} post={post} /> //

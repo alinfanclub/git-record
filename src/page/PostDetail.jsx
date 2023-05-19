@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { formatAgo } from "../util/timeago";
 import "./PostDetail.module.css";
-import { AiFillDelete } from "react-icons/ai";
+import { AiFillDelete, AiOutlineEye } from "react-icons/ai";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import {
@@ -35,6 +35,7 @@ export default function PostDetail() {
   const param = useParams().postId;
   const [text, setText] = useState();
   const [time, setTime] = useState();
+  const [btnStop, setBtnStop] = useState(false);
 
   const queryClient = useQueryClient();
 
@@ -58,6 +59,8 @@ export default function PostDetail() {
     });
   }, [param]);
 
+  // ~ useMutation
+
   const upHeart = useMutation(({ param, user }) => addUserLike(param, user), {
     onSuccess: () => queryClient.invalidateQueries(["userLike"]),
   });
@@ -70,13 +73,13 @@ export default function PostDetail() {
   );
 
   const uplikenumber = useMutation(
-    ({ param, post, userLike }) => addLkie(param, post, userLike),
+    ({ param, post, user }) => addLkie(param, post, user, userLike),
     {
       onSuccess: () => queryClient.invalidateQueries(["postDetail"]),
     }
   );
   const loselikenumber = useMutation(
-    ({ param, post, userLike }) => loseLkie(param, post, userLike),
+    ({ param, post, user }) => loseLkie(param, post, user),
     {
       onSuccess: () => queryClient.invalidateQueries(["postDetail"]),
     }
@@ -97,7 +100,7 @@ export default function PostDetail() {
       const createdAtSimple = `${year}-${month}-${day} ${hour}:${minutes}`;
       setTime(createdAtSimple);
     }
-  }, [post]);
+  }, [post, param]);
 
   useEffect(() => {
     if (post) {
@@ -109,7 +112,6 @@ export default function PostDetail() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, post, param]);
-
   // console.log(post);
 
   // console.log(1);
@@ -145,37 +147,30 @@ export default function PostDetail() {
     }
   };
 
-  const handleHeartToggle = () => {
-    if (!user) {
-      alert("글이 좋았다면 로그인 하시고 하트 꾸욱 ~ ");
-    } else if (userLike.map((obj) => obj.user).includes(user.uid)) {
-      // removeHeart.mutate(
-      //   { param, user },
-      //   {
-      //     onSuccess: () => {
-      //       console.log("delete sucess");
-      //       loselikenumber.mutate({ param, post, userLike });
-      //     },
-      //   }
-      // );
-      loselikenumber.mutate(
-        { param, post, userLike },
-        {
-          onSuccess: () => {
-            removeHeart.mutate({ param, user });
-          },
-        }
-      );
-    } else {
-      uplikenumber.mutate(
-        { param, post, userLike },
-        {
-          onSuccess: () => {
-            upHeart.mutate({ param, user });
-          },
-        }
-      );
-    }
+  const handleHeartUp = () => {
+    setBtnStop(true);
+    uplikenumber.mutate(
+      { param, post, user },
+      {
+        onSuccess: () => {
+          upHeart.mutate({ param, user });
+          setBtnStop(false);
+        },
+      }
+    );
+  };
+
+  const handleHeartDown = () => {
+    setBtnStop(true);
+    loselikenumber.mutate(
+      { param, post, user },
+      {
+        onSuccess: () => {
+          removeHeart.mutate({ param, user });
+          setBtnStop(false);
+        },
+      }
+    );
   };
 
   return (
@@ -227,17 +222,23 @@ export default function PostDetail() {
             dangerouslySetInnerHTML={{ __html: text.text }}
           />
         )}
-        <div className="mt-20 flex items-center gap-2 justify-end mb-5">
-          <span onClick={handleHeartToggle}>
-            {userLike &&
-            user &&
-            userLike.map((obj) => obj.user).includes(user.uid) ? (
-              <FcLike />
-            ) : (
-              <FcLikePlaceholder />
-            )}
-          </span>
-          <span className="dark:text-white">{post && post.likes}</span>
+        <div className="mt-20 flex items-end gap-2 justify-end mb-5 flex-col ">
+          <div className="flex dark:text-white items-center gap-2">
+            <AiOutlineEye />
+            <span>{post && post.views ? post.views : "0"}</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button className={`${btnStop && "pointer-events-none"}`}>
+              {userLike &&
+              user &&
+              userLike.map((obj) => obj.user).includes(user.uid) ? (
+                <FcLike onClick={handleHeartDown} />
+              ) : (
+                <FcLikePlaceholder onClick={handleHeartUp} />
+              )}
+            </button>
+            <span className="dark:text-white">{post && post.likes}</span>
+          </div>
         </div>
       </div>
       {/* 댓글 컴포넌트 */}

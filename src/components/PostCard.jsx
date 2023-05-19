@@ -1,11 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { formatAgo } from "../util/timeago";
-import { AiTwotoneHeart } from "react-icons/ai";
+import { AiOutlineEye, AiTwotoneHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
 import { GoPrimitiveDot } from "react-icons/go";
 import { useAuthContext } from "../context/AuthContext";
 import { useModalStore } from "../store/store";
+import { upView } from "../api/firebase";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function PostCard({
   post,
@@ -16,9 +18,16 @@ export default function PostCard({
 
   const searchClose = useModalStore((state) => state.searchClose);
 
+  const queryClient = useQueryClient();
+
+  const handleViewup = useMutation(({ id, post }) => upView(id, post), {
+    onSuccess: () => queryClient.invalidateQueries(["postDetail"]),
+  });
+
   const moveDetailPage = (id) => {
     navigate(`/post/${id}`);
     searchClose();
+    handleViewup.mutate({ id, post });
   };
   return (
     <li className=" flex-col items-centr justify-between border-b first:border-t border-gray-300 p-2 cursor-pointe gap-4 py-4 flex ">
@@ -58,6 +67,10 @@ export default function PostCard({
             <span>
               {post.comments ? Object.values(post.comments).length : "0"}
             </span>
+          </div>
+          <div className="flex dark:text-white items-center gap-2">
+            <AiOutlineEye />
+            <span>{post && post.views ? post.views : "0"}</span>
           </div>
         </div>
       </div>

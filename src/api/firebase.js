@@ -138,40 +138,62 @@ export async function UserChekFalse(id) {
 
 // ! Hearts
 
+// ~ 좋아요 누른 아이디 저장
 export async function addUserLike(id, user) {
   return set(ref(database, `post/${id}/userLike/${user.uid}`), {
     user: user.uid,
     userName: user.displayName,
   });
 }
+// ~ 좋아요 누른 아이디 불러오기
 export async function userLikeList(id) {
   return get(ref(database, `post/${id}/userLike`)).then((snapshot) => {
     const Like = snapshot.val() || {};
     return Object.values(Like);
   });
 }
+
+// ~ 좋아요 누른 아이디 삭제
 export async function deleteHeart(id, user) {
   return remove(ref(database, `post/${id}/userLike/${user.uid}`));
 }
-export async function addLkie(id, post, userLike) {
+
+// ~ 좋아요 절대적인 카운터 +1
+export async function addLkie(id, post, user) {
   const postRef = ref(database, `post/${id}`);
   const snapshot = await get(postRef);
   const currentLikes = snapshot.val().likes || 0;
-  return set(ref(database, `post/${id}`), {
-    ...post,
-    likes: currentLikes + 1,
-  });
+  const is = snapshot.val().userLike;
+  const userLikeList = Object.values(is || []);
+  console.log(userLikeList);
+  console.log(userLikeList);
+  if (!userLikeList.map((obj) => obj.user).includes(user.uid)) {
+    return set(ref(database, `post/${id}`), {
+      ...post,
+      likes: currentLikes + 1,
+    });
+  }
+  return alert("좋아요 추가 중복");
 }
-export async function loseLkie(id, post, userLike) {
+
+// ~ 좋아요 절대적인 카운터 -1
+export async function loseLkie(id, post, user) {
   const postRef = ref(database, `post/${id}`);
   const snapshot = await get(postRef);
   const currentLikes = snapshot.val().likes;
-  return set(ref(database, `post/${id}`), {
-    ...post,
-    likes: currentLikes - 1,
-  });
+  const userLikeList = Object.values(snapshot.val().userLike);
+  console.log(userLikeList);
+  console.log(user);
+  if (userLikeList.map((obj) => obj.user).includes(user.uid)) {
+    return set(ref(database, `post/${id}`), {
+      ...post,
+      likes: currentLikes - 1,
+    });
+  }
+  return alert("좋아요 취소 중복");
 }
 
+// ~ 게시글 업데이트
 export async function updatePost(text, user, postInfo, id) {
   return set(ref(database, `post/${id}`), {
     ...postInfo,
@@ -183,6 +205,22 @@ export async function updatePost(text, user, postInfo, id) {
       userName: user.displayName,
       userProfile: user.photoURL,
     },
+  });
+}
+
+// ! 조회수 기능 추가
+export async function upView(id, post) {
+  const postRef = ref(database, `post/${id}`);
+  const snapshot = await get(postRef);
+  const currentViews = snapshot.val().views || 0;
+  return update(ref(database, `post/${id}`), {
+    ...post,
+    views: currentViews + 1,
+  });
+}
+export async function getView(id) {
+  return get(ref(database, `post/${id}/views`)).then((snapshot) => {
+    return String(snapshot._node.value_);
   });
 }
 

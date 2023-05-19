@@ -28,7 +28,7 @@ export default function Header() {
       </Link>
       <div className="flex items-center gap-4">
         <nav className="">
-          <ul className="flex items-center gap-4">
+          <ul className="flex items-center gap-4 hidden sm:flex dark:text-white items-center">
             <li>
               <Link to={"/post/creation/list"}>창작 시</Link>
             </li>

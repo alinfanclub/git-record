@@ -8,7 +8,7 @@ import { HiMoon, HiSun } from "react-icons/hi";
 
 export default function UserProfile() {
   const { user, logout } = useAuthContext();
-  const [side, setSide] = useState(true);
+  const [side, setSide] = useState(false);
 
   const sideToggle = () => {
     setSide(!side);

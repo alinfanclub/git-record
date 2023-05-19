@@ -13,12 +13,13 @@ export default function PostListByType() {
   const param = useParams().type;
   const [page, setPage] = useState(1);
   const [items] = useState(10);
+  const [selected, setSelected] = useState("newest");
   const {
     isLoading,
     error,
     data: Post,
   } = useQuery({
-    queryKey: ["postType"],
+    queryKey: ["postType", param, selected],
     queryFn: () => getPostDataForType(param),
   });
 
@@ -27,6 +28,10 @@ export default function PostListByType() {
 
   const handlePageChange = (page) => {
     setPage(page);
+  };
+
+  const handleSelect = (e) => {
+    setSelected(e.target.value);
   };
 
   return (
@@ -47,12 +52,58 @@ export default function PostListByType() {
               : "미분류"
             : null}
         </h2>
-        <div>
-          <ul className="flex gap-4 flex-col justify-center bg-neutral-50 dark:bg-gray-700 p-4 max-w-6xl mx-auto">
-            {Post &&
-              Post.slice(items * (page - 1), items * (page - 1) + items).map(
-                (post, index) => <PostCard key={post.id} post={post} />
-              )}
+        <div className="flex flex-col items-center max-w-6xl mx-auto  gap-4">
+          <div className="flex justify-end w-full">
+            <select
+              name="sortType"
+              id="sortType"
+              className="outline-none"
+              onChange={handleSelect}
+              defaultValue={selected}
+            >
+              <option value="newest">최신 게시물</option>
+              <option value="oldest">오래된 게시물</option>
+              <option value="AuthorAtoB">작가 가나다 순</option>
+              <option value="like">좋아요 순</option>
+            </select>
+          </div>
+          <ul className="flex gap-4 flex-col justify-center bg-neutral-50 dark:bg-gray-700 p-4 w-full">
+            {
+              Post &&
+                selected === "newest" &&
+                Post.sort((a, b) => b.createdAt - a.createdAt)
+                  .slice(items * (page - 1), items * (page - 1) + items)
+                  .map(
+                    (post, index) => <PostCard key={post.id} post={post} /> //
+                  ) //
+            }
+            {
+              Post &&
+                selected === "oldest" &&
+                Post.sort((a, b) => a.createdAt - b.createdAt)
+                  .slice(items * (page - 1), items * (page - 1) + items)
+                  .map(
+                    (post, index) => <PostCard key={post.id} post={post} /> //
+                  ) //
+            }
+            {
+              Post &&
+                selected === "AuthorAtoB" &&
+                Post.sort((a, b) => a.author.localeCompare(b.author))
+                  .slice(items * (page - 1), items * (page - 1) + items)
+                  .map(
+                    (post, index) => <PostCard key={post.id} post={post} /> //
+                  ) //
+            }
+            {
+              Post &&
+                selected === "like" &&
+                Post.sort((a, b) => b.likes - a.likes)
+                  .slice(items * (page - 1), items * (page - 1) + items)
+                  .map(
+                    (post, index) => <PostCard key={post.id} post={post} /> //
+                  ) //
+            }
           </ul>
           <Pagination
             activePage={page}

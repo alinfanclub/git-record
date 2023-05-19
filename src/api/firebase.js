@@ -76,9 +76,10 @@ export async function getPostDataForType(params) {
   return get(ref(database, "post")) //
     .then((snapshot) => {
       if (snapshot.exists()) {
-        return Object.values(snapshot.val())
-          .filter((post) => post.type === params)
-          .sort((a, b) => b.createdAt - a.createdAt);
+        return Object.values(snapshot.val()).filter(
+          (post) => post.type === params
+        );
+        // .sort((a, b) => b.createdAt - a.createdAt);
       }
       return [];
     });
@@ -136,6 +137,7 @@ export async function UserChekFalse(id) {
 }
 
 // ! Hearts
+
 export async function addUserLike(id, user) {
   return set(ref(database, `post/${id}/userLike/${user.uid}`), {
     user: user.uid,
@@ -150,6 +152,24 @@ export async function userLikeList(id) {
 }
 export async function deleteHeart(id, user) {
   return remove(ref(database, `post/${id}/userLike/${user.uid}`));
+}
+export async function addLkie(id, post, userLike) {
+  const postRef = ref(database, `post/${id}`);
+  const snapshot = await get(postRef);
+  const currentLikes = snapshot.val().likes || 0;
+  return set(ref(database, `post/${id}`), {
+    ...post,
+    likes: currentLikes + 1,
+  });
+}
+export async function loseLkie(id, post, userLike) {
+  const postRef = ref(database, `post/${id}`);
+  const snapshot = await get(postRef);
+  const currentLikes = snapshot.val().likes;
+  return set(ref(database, `post/${id}`), {
+    ...post,
+    likes: currentLikes - 1,
+  });
 }
 
 export async function updatePost(text, user, postInfo, id) {

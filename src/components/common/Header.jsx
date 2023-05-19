@@ -27,6 +27,22 @@ export default function Header() {
         )}
       </Link>
       <div className="flex items-center gap-4">
+        <nav className="">
+          <ul className="flex items-center gap-4">
+            <li>
+              <Link to={"/post/creation/list"}>창작 시</Link>
+            </li>
+            <li>
+              <Link to={"/post/recomend/list"}>추천 시</Link>
+            </li>
+            <li>
+              <Link to={"/post/etc/list"}>부스러기들</Link>
+            </li>
+            <li>
+              <Link to={"/post/notice/list"}>공지사항</Link>
+            </li>
+          </ul>
+        </nav>
         <div
           onClick={openSearchToggle}
           className="sm:w-36 sm:bg-white sm:h-8 sm:rounded-2xl sm:px-2 flex items-center sm:border sm:border-gray-500"

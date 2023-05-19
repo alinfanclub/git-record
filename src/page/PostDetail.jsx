@@ -6,9 +6,11 @@ import { AiFillDelete } from "react-icons/ai";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
 import { FcLike, FcLikePlaceholder } from "react-icons/fc";
 import {
+  addLkie,
   addUserLike,
   deleteHeart,
   getPostDataDetail,
+  loseLkie,
   removePost,
   UserChekTrue,
   userLikeList,
@@ -21,6 +23,7 @@ import Comments from "../components/Comments";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 // import { useQuery } from "@tanstack/react-query";
 import "react-quill/dist/quill.snow.css";
+
 export default function PostDetail() {
   // const {
   //   state: { postTime },
@@ -45,7 +48,7 @@ export default function PostDetail() {
   );
 
   const { data: userLike } = useQuery({
-    queryKey: ["userLike"],
+    queryKey: ["userLike", param],
     queryFn: async () => userLikeList(param),
   });
 
@@ -66,7 +69,20 @@ export default function PostDetail() {
     }
   );
 
-  const mock = useMutation(({ param }) => UserChekTrue(param), {
+  const uplikenumber = useMutation(
+    ({ param, post, userLike }) => addLkie(param, post, userLike),
+    {
+      onSuccess: () => queryClient.invalidateQueries(["postDetail"]),
+    }
+  );
+  const loselikenumber = useMutation(
+    ({ param, post, userLike }) => loseLkie(param, post, userLike),
+    {
+      onSuccess: () => queryClient.invalidateQueries(["postDetail"]),
+    }
+  );
+
+  const mock = useMutation(({ param, post }) => UserChekTrue(param), {
     onSuccess: () => queryClient.invalidateQueries(["postAlert"]),
   });
 
@@ -76,8 +92,8 @@ export default function PostDetail() {
       const year = date.getFullYear();
       const month = date.getMonth() + 1;
       const day = date.getDate();
-      const hour = String(date.getHours()).padStart("2", 0);
-      const minutes = String(date.getMinutes()).padStart("2", 0);
+      const hour = String(date.getHours()).padStart(2, 0);
+      const minutes = String(date.getMinutes()).padStart(2, 0);
       const createdAtSimple = `${year}-${month}-${day} ${hour}:${minutes}`;
       setTime(createdAtSimple);
     }
@@ -133,20 +149,29 @@ export default function PostDetail() {
     if (!user) {
       alert("글이 좋았다면 로그인 하시고 하트 꾸욱 ~ ");
     } else if (userLike.map((obj) => obj.user).includes(user.uid)) {
-      removeHeart.mutate(
-        { param, user },
+      // removeHeart.mutate(
+      //   { param, user },
+      //   {
+      //     onSuccess: () => {
+      //       console.log("delete sucess");
+      //       loselikenumber.mutate({ param, post, userLike });
+      //     },
+      //   }
+      // );
+      loselikenumber.mutate(
+        { param, post, userLike },
         {
           onSuccess: () => {
-            console.log("delete sucess");
+            removeHeart.mutate({ param, user });
           },
         }
       );
     } else {
-      upHeart.mutate(
-        { param, user },
+      uplikenumber.mutate(
+        { param, post, userLike },
         {
           onSuccess: () => {
-            console.log("sucess!");
+            upHeart.mutate({ param, user });
           },
         }
       );
@@ -212,7 +237,7 @@ export default function PostDetail() {
               <FcLikePlaceholder />
             )}
           </span>
-          <span className="dark:text-white">{userLike && userLike.length}</span>
+          <span className="dark:text-white">{post && post.likes}</span>
         </div>
       </div>
       {/* 댓글 컴포넌트 */}

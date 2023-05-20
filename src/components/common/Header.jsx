@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useAuthContext } from "../../context/AuthContext";
 import LoginButton from "../LoginButton";
@@ -11,11 +11,20 @@ import { HiMoon, HiSun } from "react-icons/hi";
 import { useDarkMode } from "../../context/DarkModeContext";
 import { useModalStore } from "../../store/store";
 import { AiOutlineSearch } from "react-icons/ai";
+import { addUser, getUserInfo } from "../../api/firebase";
 
 export default function Header() {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const { user, login } = useAuthContext();
+
   const openSearchToggle = useModalStore((state) => state.openSearchToggle);
+
+  useEffect(() => {
+    if (user) {
+      addUser(user);
+      getUserInfo(user);
+    }
+  }, [user]);
 
   return (
     <header className="w-full flex justify-between border-b border-gray-300 dark:border-gray-500/50 p-2 items-center sticky top-0 bg-white mb-4 z-50 sm:px-[4.5rem] dark:bg-gray-800">
@@ -27,22 +36,6 @@ export default function Header() {
         )}
       </Link>
       <div className="flex items-center gap-4">
-        <nav className="">
-          <ul className="flex items-center gap-4 hidden sm:flex dark:text-white items-center">
-            <li>
-              <Link to={"/post/creation/list"}>창작 시</Link>
-            </li>
-            <li>
-              <Link to={"/post/recomend/list"}>추천 시</Link>
-            </li>
-            <li>
-              <Link to={"/post/etc/list"}>부스러기들</Link>
-            </li>
-            <li>
-              <Link to={"/post/notice/list"}>공지사항</Link>
-            </li>
-          </ul>
-        </nav>
         <div
           onClick={openSearchToggle}
           className="sm:w-36 sm:bg-white sm:h-8 sm:rounded-2xl sm:px-2 flex items-center sm:border sm:border-gray-500"

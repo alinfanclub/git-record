@@ -42,6 +42,35 @@ export function logout() {
   });
 }
 
+// ~ 'user/'에 정보 추가하기
+export async function addUser({ displayName, uid, email, photoURL }) {
+  console.log();
+  const userRef = ref(database, `user/${uid}`);
+  const snapshot = await get(userRef);
+  console.log(snapshot);
+  if (snapshot.exists()) {
+    return false;
+  } else {
+    return set(ref(database, `user/${uid}`), {
+      userDisplayName: displayName,
+      userUid: uid,
+      userEmail: email,
+      userPhotoURL: photoURL,
+    });
+  }
+}
+
+export async function getUserInfo(user) {
+  const data = query(ref(database, `user/${user.uid}`));
+  return get(data) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return console.log(Object.values(snapshot.val()));
+      }
+      return [];
+    });
+}
+
 export function onUserStateChange(callback) {
   const auth = getAuth();
   onAuthStateChanged(auth, async (user) => {

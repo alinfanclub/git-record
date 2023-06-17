@@ -3,7 +3,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { uploadImage } from "../api/UploadImage";
 import { getPostDataDetail, updatePost } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 import SubmitButton from "../components/SubmitButton";
 import Spinner from "../components/Spinner";
 import ReactQuill from "react-quill";

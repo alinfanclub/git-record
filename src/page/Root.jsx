@@ -10,7 +10,6 @@ import ScrollToTop from "./ScrollToTop";
 import SearchPop from "../components/SearchPop";
 import { useModalStore } from "../store/store";
 import { PostListProvider } from "../context/PostListContext";
-import { PersonalUserProvider } from "../context/UserContext";
 
 export default function Root() {
   const queryClient = new QueryClient();

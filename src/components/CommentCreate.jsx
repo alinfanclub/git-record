@@ -4,7 +4,6 @@ import { uploadImage } from "../api/UploadImage";
 import SpinnerMic from "./SpinnerMic";
 import { useParams } from "react-router-dom";
 import { addComment, UserChekFalse } from "../api/firebase";
-import { useAuthContext } from "../context/AuthContext";
 import SubmitButton from "./SubmitButton";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import ReactQuill from "react-quill";
@@ -15,7 +14,6 @@ import { PersonalUserDataStore } from "../store/store";
 Quill.register("modules/ImageResize", ImageResize);
 
 export default function CommentCreate() {
-  const { user } = useAuthContext();
   const personal = PersonalUserDataStore((state) => state.personal);
 
   const [comment, seComment] = useState("");

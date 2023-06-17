@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React, { useMemo, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { addSubComment, UserChekFalse } from "../api/firebase";
-import { useAuthContext } from "../context/AuthContext";
 import CancleButton from "./CancleButton";
 import SubmitButton from "./SubmitButton";
 import ReactQuill from "react-quill";
@@ -18,7 +17,6 @@ export default function SubCommentBlock({ commentId, hideSub }) {
   const [comment, setComment] = useState();
   const [isUploading, setIsUploading] = useState(false);
   const quillRef = useRef();
-  const { user } = useAuthContext();
   const postId = useParams().postId;
   const queryClient = useQueryClient();
 

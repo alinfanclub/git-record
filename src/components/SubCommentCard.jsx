@@ -169,7 +169,7 @@ export default function SubCommentCard({ data, param, commentId }) {
               <img
                 src={data.userInfo.userProfile}
                 alt=""
-                className="w-10 h-10 rounded-full mr-2"
+                className="w-10 h-10 rounded-full mr-2 object-cover"
               />
             </div>
             <span className="text-xs dark:text-white">

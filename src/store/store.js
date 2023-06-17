@@ -15,3 +15,15 @@ export const PostListStore = create((set) => ({
   postList: [],
   addPostList: (val) => set((state) => ({ ...state, postList: val })),
 }));
+
+export const PersonalUserDataStore = create((set) => ({
+  personal : [],
+  addPersonal: (res) => set(() => ({personal: res})),
+  addPersonalUserUrl: (val) => set((state) => ({ personal: { ...state.personal, userPhotoURL: val } })),
+  addPersonalUserDisplayName: (val) => set((state) => ({ personal: { ...state.personal, userDisplayName: val } })),
+}))
+
+// export const URLUserDataStore = create((set) => ({
+//   user : [],
+//   addUser: (res) => set(() => ({personal: res}))
+// }))

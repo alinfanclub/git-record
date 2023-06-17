@@ -11,10 +11,12 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import ImageResize from "@looop/quill-image-resize-module-react";
 import Quill from "quill";
+import { PersonalUserDataStore } from "../store/store";
 Quill.register("modules/ImageResize", ImageResize);
 
 export default function CommentCreate() {
   const { user } = useAuthContext();
+  const personal = PersonalUserDataStore((state) => state.personal);
 
   const [comment, seComment] = useState("");
   const [isUploading, setIsUploading] = useState(false);
@@ -49,7 +51,7 @@ export default function CommentCreate() {
   };
 
   const addComments = useMutation(
-    ({ comment, user, postId }) => addComment(comment, user, postId),
+    ({ comment, personal, postId }) => addComment(comment, personal, postId),
     {
       onSuccess: () => queryClient.invalidateQueries(["comments"]),
     }
@@ -68,7 +70,7 @@ export default function CommentCreate() {
       setIsUploading(true);
       const editor = quillRef.current.getEditor();
       addComments.mutate(
-        { comment, user, postId },
+        { comment, personal, postId },
         {
           onSuccess: () => {
             setIsUploading(false);

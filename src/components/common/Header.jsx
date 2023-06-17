@@ -4,27 +4,27 @@ import { useAuthContext } from "../../context/AuthContext";
 import LoginButton from "../LoginButton";
 import UserProfile from "../UserProfile";
 import { HiMoon, HiSun } from "react-icons/hi";
-// import { BsBell } from "react-icons/bs";
-// import { getPostData } from "../../api/firebase";
-// // import { useQuery } from "@tanstack/react-query";
-// import AlertList from "../AlertList";
 import { useDarkMode } from "../../context/DarkModeContext";
-import { useModalStore } from "../../store/store";
+import { useModalStore, PersonalUserDataStore } from "../../store/store";
 import { AiOutlineSearch } from "react-icons/ai";
-import { addUser, getUserInfo } from "../../api/firebase";
+import { addUser, getUserUseinInfo } from "../../api/firebase";
 
 export default function Header() {
   const { darkMode, toggleDarkMode } = useDarkMode();
   const { user, login } = useAuthContext();
-
   const openSearchToggle = useModalStore((state) => state.openSearchToggle);
-
+  const addPersonal = PersonalUserDataStore((state) => state.addPersonal)
   useEffect(() => {
-    if (user) {
-      addUser(user);
-      getUserInfo(user);
+    async function getUser() {
+      await addUser(user)
+      getUserUseinInfo(user).then(res => {
+        addPersonal(res);
+      });
     }
-  }, [user]);
+    if (user) {
+      getUser();
+    }
+  }, [user, addPersonal]);
 
   return (
     <header className="w-full flex justify-between border-b border-gray-300 dark:border-gray-500/50 p-2 items-center sticky top-0 bg-white mb-4 z-50 sm:px-[4.5rem] dark:bg-gray-800">

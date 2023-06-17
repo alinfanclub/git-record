@@ -186,7 +186,7 @@ export default function PostDetail() {
               <img
                 src={post && post.userInfo.userProfile}
                 alt={post && post.userInfo.userName}
-                className="w-10 h-10 rounded-full mr-2 bg-white"
+                className="w-10 h-10 rounded-full mr-2 bg-white object-cover"
               />
               <div>
                 <p className="mr-2 dark:text-white">

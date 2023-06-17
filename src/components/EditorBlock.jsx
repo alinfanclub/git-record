@@ -12,6 +12,7 @@ import "react-quill/dist/quill.snow.css";
 import ImageResize from "@looop/quill-image-resize-module-react";
 import Quill from "quill";
 import SpinnerMic from "./SpinnerMic";
+import { PersonalUserDataStore } from "../store/store";
 Quill.register("modules/ImageResize", ImageResize);
 
 export default function EditorBlock() {
@@ -22,6 +23,7 @@ export default function EditorBlock() {
 
   const postId = uuid();
   const { user } = useAuthContext();
+  const personal = PersonalUserDataStore((state) => state.personal);
   const navigate = useNavigate();
 
   const quillRef = useRef();
@@ -29,7 +31,8 @@ export default function EditorBlock() {
   const queryClient = useQueryClient();
 
   const uploadNewPost = useMutation(
-    ({ text, user, postInfo, postId }) => addPost(text, user, postInfo, postId),
+    ({ text, personal, postInfo, postId }) =>
+      addPost(text, personal, postInfo, postId),
     { onSuccess: () => queryClient.invalidateQueries(["post"]) }
   );
 
@@ -70,7 +73,7 @@ export default function EditorBlock() {
     } else {
       setIsUploading(true);
       uploadNewPost.mutate(
-        { text, user, postInfo, postId },
+        { text, personal, postInfo, postId },
         {
           onSuccess: () => {
             setIsUploading(false);
@@ -159,7 +162,7 @@ export default function EditorBlock() {
           type="text"
           id="author"
           className="p-4 outline-none border border-gray-300 my-1 w-full text-xs sm:text-lg  dark:bg-gray-500/20 dark:text-white"
-          placeholder={`작가(혹은 본인)를(을) 입력해주세요 ex)${user.displayName}`}
+          placeholder={`작가(혹은 본인)를(을) 입력해주세요 ex)${personal.userDisplayName}`}
           onChange={handleChange}
           name="author"
           required

@@ -1646,9 +1646,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudinary/html@npm:^1.9.1":
-  version: 1.9.1
-  resolution: "@cloudinary/html@npm:1.9.1"
+"@cloudinary/html@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "@cloudinary/html@npm:1.11.2"
   dependencies:
     "@types/lodash.clonedeep": ^4.5.6
     "@types/lodash.debounce": ^4.0.6
@@ -1656,18 +1656,18 @@ __metadata:
     lodash.clonedeep: ^4.5.0
     lodash.debounce: ^4.0.8
     typescript: ^4.1.2
-  checksum: 9a2063c124a7424331ba94a41691fa846e23965fa5017c0f27ad0104058313e978505c0cb223f5a9ada982df881942910bd4d2d521fa743855ea12725b98b304
+  checksum: 526654cc7646384eba66f86d46bf0c3f5abb7c2c766ca57bbe5be84275bb2793243783ea10376dfc8ea81c32c2a65a9a85fa34ff328e22d8d6dcb4de25e83cff
   languageName: node
   linkType: hard
 
-"@cloudinary/react@npm:^1.9.1":
-  version: 1.9.1
-  resolution: "@cloudinary/react@npm:1.9.1"
+"@cloudinary/react@npm:^1.11.2":
+  version: 1.11.2
+  resolution: "@cloudinary/react@npm:1.11.2"
   dependencies:
-    "@cloudinary/html": ^1.9.1
+    "@cloudinary/html": ^1.11.2
   peerDependencies:
     react: ^16.3.0 || ^17.0.0 || ^18.0.0
-  checksum: 6bac39f374d0228c0d981754e6baafd003ce937e5301c606e5db4947d3aee0353f0d2b46069ba0167d18b7bdd27903d382545113943e9da7b601ee7e2d02fe34
+  checksum: beea9b3a4c665d0013a86f1a8eab9e2b136bb5159878b068f3afe792b4bfe06ebf391b2ff5e95ce4151b562d17e497eb8c08afd3ce70a3b0845d97b415455806
   languageName: node
   linkType: hard
 
@@ -1680,7 +1680,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cloudinary/url-gen@npm:^1.7.0, @cloudinary/url-gen@npm:^1.9.0":
+"@cloudinary/transformation-builder-sdk@npm:^1.2.7":
+  version: 1.2.8
+  resolution: "@cloudinary/transformation-builder-sdk@npm:1.2.8"
+  dependencies:
+    "@cloudinary/url-gen": ^1.7.0
+  checksum: b67ad225ea3d519e8a2e47114eaeb5de7556085130e5470154a10a5b4fe180f2843165793e0fc9f2de852ce5fdaa21abd986e463ccbf549047f9b047d495d2b8
+  languageName: node
+  linkType: hard
+
+"@cloudinary/url-gen@npm:^1.10.1":
+  version: 1.10.1
+  resolution: "@cloudinary/url-gen@npm:1.10.1"
+  dependencies:
+    "@cloudinary/transformation-builder-sdk": ^1.2.7
+  checksum: 924127449613187ca58dedc47a0365011ee0256371d040dd1a42c45e2703d4a36b9b605fe2125c3d743d7d0f6116c1a3d1854bdaa29c3d417a4b701ca0ec3767
+  languageName: node
+  linkType: hard
+
+"@cloudinary/url-gen@npm:^1.7.0":
   version: 1.9.0
   resolution: "@cloudinary/url-gen@npm:1.9.0"
   dependencies:
@@ -10474,8 +10492,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "map-record@workspace:."
   dependencies:
-    "@cloudinary/react": ^1.9.1
-    "@cloudinary/url-gen": ^1.9.0
+    "@cloudinary/react": ^1.11.2
+    "@cloudinary/url-gen": ^1.10.1
     "@looop/quill-image-resize-module-react": ^3.1.5
     "@tanstack/react-query": ^4.24.4
     "@testing-library/jest-dom": ^5.14.1

@@ -176,7 +176,9 @@ export default function ShowComment({
   // ~ 댓글 수정
   const upDateComment = useMutation(
     ({ text, param, commentId }) => updateComment(text, param, commentId),
-    { onSuccess: () => queryClient.invalidateQueries(["comments"]) }
+    {
+      onSuccess: () => queryClient.invalidateQueries(["comments"]),
+    }
   );
 
   const update = (e) => {

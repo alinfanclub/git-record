@@ -11,6 +11,7 @@ import ImageResize from "@looop/quill-image-resize-module-react";
 import Quill from "quill";
 import { uploadImage } from "../api/UploadImage";
 import SpinnerMic from "./SpinnerMic";
+import { PersonalUserDataStore } from "../store/store";
 Quill.register("modules/ImageResize", ImageResize);
 
 export default function SubCommentBlock({ commentId, hideSub }) {
@@ -21,9 +22,11 @@ export default function SubCommentBlock({ commentId, hideSub }) {
   const postId = useParams().postId;
   const queryClient = useQueryClient();
 
+  const personal = PersonalUserDataStore((state) => state.personal);
+
   const uploadSubComment = useMutation(
-    ({ comment, user, postId, commentId }) =>
-      addSubComment(comment, user, postId, commentId),
+    ({ comment, personal, postId, commentId }) =>
+      addSubComment(comment, personal, postId, commentId),
     {
       onSuccess: () => queryClient.invalidateQueries(["comments"]),
     }
@@ -37,7 +40,7 @@ export default function SubCommentBlock({ commentId, hideSub }) {
     const editor = quillRef.current.getEditor();
     e.preventDefault();
     uploadSubComment.mutate(
-      { comment, user, postId, commentId },
+      { comment, personal, postId, commentId },
       {
         onSuccess: () => {
           editor.setText("");

@@ -44,10 +44,8 @@ export function logout() {
 
 // ~ 'user/'에 정보 추가하기
 export async function addUser({ displayName, uid, email, photoURL }) {
-  console.log();
   const userRef = ref(database, `user/${uid}`);
   const snapshot = await get(userRef);
-  console.log(snapshot);
   if (snapshot.exists()) {
     return false;
   } else {
@@ -60,12 +58,133 @@ export async function addUser({ displayName, uid, email, photoURL }) {
   }
 }
 
-export async function getUserInfo(user) {
+// ~ 유저 이름 수정
+export async function userNameFix(user, name) {
+  return update(ref(database, `user/${user.userUid}`), {
+    ...user,
+    userDisplayName: name,
+  });
+}
+
+export async function userImageFix(user, url) {
+  return update(ref(database, `user/${user.userUid}`), {
+    ...user,
+    userPhotoURL: url,
+  });
+}
+
+// post 데이터에서 userInfo의 userUid와 같은 데이터를 찾아서  userPhotoURL을 user의 userPhotoURL로 변경
+export async function userImageFixPost(user, url) {
+  return get(ref(database, "post")) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const post = Object.values(snapshot.val());
+        post.forEach((post) => {
+          if(user.userUid === post.userInfo.userUid){
+            update(ref(database, `post/${post.id}/userInfo`), {
+              userProfile: url,
+            })
+          }
+
+          if(post.comments) {
+            Object.values(post.comments).forEach((comment)=> {
+              if(comment.userInfo.userUid === user.userUid) {
+                update(ref(database, `post/${post.id}/comments/${comment.commentId}/userInfo`), {
+                  userProfile: url,
+                })
+              }
+              if(comment.subcomments) {
+                Object.values(comment.subcomments).forEach((subcomment)=> {
+                  if(subcomment.userInfo.userUid === user.userUid) {
+                    update(ref(database, `post/${post.id}/comments/${comment.commentId}/subcomments/${subcomment.SubCommentId}/userInfo`), {
+                      userProfile: url,
+                    })
+                  }
+                })
+              }
+            })
+          }
+        });
+      }
+    });
+}
+
+export async function userNameFixPost(user, text) {
+  return get(ref(database, "post")) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        const post = Object.values(snapshot.val());
+        post.forEach((post) => {
+          if(user.userUid === post.userInfo.userUid){
+            update(ref(database, `post/${post.id}/userInfo`), {
+              userName: text,
+            })
+          }
+
+          if(post.comments) {
+            Object.values(post.comments).forEach((comment)=> {
+              if(comment.userInfo.userUid === user.userUid) {
+                update(ref(database, `post/${post.id}/comments/${comment.commentId}/userInfo`), {
+                  userName: text,
+                })
+              }
+              if(comment.subcomments) {
+                Object.values(comment.subcomments).forEach((subcomment)=> {
+                  if(subcomment.userInfo.userUid === user.userUid) {
+                    update(ref(database, `post/${post.id}/comments/${comment.commentId}/subcomments/${subcomment.SubCommentId}/userInfo`), {
+                      userName: text,
+                    })
+                  }
+                })
+              }
+            })
+          }
+        });
+      }
+    });
+}
+
+
+// ~ 사용 유저 정보 가져오기
+export async function getUserUseinInfo(user) {
   const data = query(ref(database, `user/${user.uid}`));
   return get(data) //
     .then((snapshot) => {
       if (snapshot.exists()) {
-        return console.log(Object.values(snapshot.val()));
+        return Object(snapshot.val());
+      }
+      return [];
+    });
+}
+export async function getUserUseinInfoS(id) {
+  const data = query(ref(database, `user/${id}`));
+  return get(data) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return Object(snapshot.val());
+      }
+      return [];
+    });
+}
+
+export async function getAllUser(user) {
+  const data = query(ref(database, `user`));
+  return get(data) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return Object(snapshot.val());
+      }
+      return [];
+    });
+}
+
+// ~ 유저 디테일 페이지 정보 가져오기
+export async function getUserURLInfo(param) {
+  const data = query(ref(database, `user/${param}`));
+  return get(data) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return Object(snapshot.val());
       }
       return [];
     });
@@ -113,6 +232,8 @@ export async function getPostDataForType(params) {
       return [];
     });
 }
+
+// ~ 유저 디테일 페이지 포스트 데이터
 export async function getPostDataForUsername(params) {
   return get(ref(database, "post")) //
     .then((snapshot) => {
@@ -124,36 +245,40 @@ export async function getPostDataForUsername(params) {
       return [];
     });
 }
-export async function getUserThumbnail(params) {
-  return get(ref(database, "post")) //
-    .then((snapshot) => {
-      if (snapshot.exists()) {
-        return Object.values(snapshot.val()).find(
-          (post) => post.userInfo.userUid === params
-        );
-      }
-      return [];
-    });
-}
+
+// TODO 삭제하기
+// export async function getUserThumbnail(params) {
+//   return get(ref(database, "post")) //
+//     .then((snapshot) => {
+//       if (snapshot.exists()) {
+//         return Object.values(snapshot.val()).find(
+//           (post) => post.userInfo.userUid === params
+//         );
+//       }
+//       return [];
+//     });
+// }
 export async function getPostDataDetail(id) {
   return get(ref(database, `post/${id}`)) //
     .then((snapshot) => {
       return Object(snapshot.val());
     });
 }
-export async function addPost(text, user, postInfo, id) {
+export async function addPost(text, personal, postInfo, id) {
   return set(ref(database, `post/${id}`), {
     ...postInfo,
     text,
     id,
     createdAt: serverTimestamp(),
     userInfo: {
-      userUid: user.uid,
-      userName: user.displayName,
-      userProfile: user.photoURL,
+      userUid: personal.userUid,
+      userName: personal.userDisplayName,
+      userProfile: personal.userPhotoURL,
     },
   });
 }
+
+// ~ read and false
 export async function UserChekTrue(id) {
   return update(ref(database, `post/${id}`), {
     readCheck: true,
@@ -194,8 +319,6 @@ export async function addLkie(id, post, user) {
   const currentLikes = snapshot.val().likes || 0;
   const is = snapshot.val().userLike;
   const userLikeList = Object.values(is || []);
-  console.log(userLikeList);
-  console.log(userLikeList);
   if (!userLikeList.map((obj) => obj.user).includes(user.uid)) {
     return set(ref(database, `post/${id}`), {
       ...post,
@@ -211,8 +334,6 @@ export async function loseLkie(id, post, user) {
   const snapshot = await get(postRef);
   const currentLikes = snapshot.val().likes;
   const userLikeList = Object.values(snapshot.val().userLike);
-  console.log(userLikeList);
-  console.log(user);
   if (userLikeList.map((obj) => obj.user).includes(user.uid)) {
     return set(ref(database, `post/${id}`), {
       ...post,
@@ -223,16 +344,16 @@ export async function loseLkie(id, post, user) {
 }
 
 // ~ 게시글 업데이트
-export async function updatePost(text, user, postInfo, id) {
-  return set(ref(database, `post/${id}`), {
+export async function updatePost(text, personal, postInfo, id) {
+  return update(ref(database, `post/${id}`), {
     ...postInfo,
     text,
     id,
     fixed: true,
     userInfo: {
-      userUid: user.uid,
-      userName: user.displayName,
-      userProfile: user.photoURL,
+      userUid: personal.userUid,
+      userName: personal.userDisplayName,
+      userProfile: personal.userPhotoURL,
     },
   });
 }
@@ -274,17 +395,17 @@ export async function removePost(fuck) {
 // ! 댓글 기능 개발
 
 // ~ 댓글 작성
-export async function addComment(comment, user, postId) {
+export async function addComment(comment, personal, postId) {
   const randomId = uuid();
-  return set(ref(database, `post/${postId}/comments/${randomId}`), {
+  return update(ref(database, `post/${postId}/comments/${randomId}`), {
     comment,
     postId,
     commentId: randomId,
     createdAt: serverTimestamp(),
     userInfo: {
-      userUid: user.uid,
-      userName: user.displayName,
-      userProfile: user.photoURL,
+      userUid: personal.userUid,
+      userName: personal.userDisplayName,
+      userProfile: personal.userPhotoURL,
     },
   });
 }
@@ -315,9 +436,9 @@ export async function deleteComments(postId, commentId) {
 // ! 대 댓글
 
 // 대 댓글 작성
-export async function addSubComment(comment, user, postId, commentId) {
+export async function addSubComment(comment, personal, postId, commentId) {
   const randomSubId = uuid();
-  return set(
+  return update(
     ref(
       database,
       `post/${postId}/comments/${commentId}/subcomments/${randomSubId}`
@@ -327,9 +448,9 @@ export async function addSubComment(comment, user, postId, commentId) {
       SubCommentId: randomSubId,
       createdAt: serverTimestamp(),
       userInfo: {
-        userUid: user.uid,
-        userName: user.displayName,
-        userProfile: user.photoURL,
+        userUid: personal.userUid,
+        userName: personal.userDisplayName,
+        userProfile: personal.userPhotoURL,
       },
     }
   );

@@ -3,8 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@cloudinary/react": "^1.9.1",
-    "@cloudinary/url-gen": "^1.9.0",
+    "@cloudinary/react": "^1.11.2",
+    "@cloudinary/url-gen": "^1.10.1",
     "@looop/quill-image-resize-module-react": "^3.1.5",
     "@tanstack/react-query": "^4.24.4",
     "@testing-library/jest-dom": "^5.14.1",

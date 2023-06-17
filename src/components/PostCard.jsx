@@ -15,7 +15,6 @@ export default function PostCard({
 }) {
   const navigate = useNavigate();
   const { user } = useAuthContext();
-
   const searchClose = useModalStore((state) => state.searchClose);
 
   const queryClient = useQueryClient();

@@ -11,3 +11,6 @@ export async function uploadImage(file) {
       return data;
     });
 }
+// export async function uploadTunbnailImage() {
+//   const myCld = new Cloudinary({cloud: {cloudName: 'demo'}});
+// }

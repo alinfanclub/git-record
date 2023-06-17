@@ -1,9 +1,9 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 
 import { uploadImage } from "../api/UploadImage";
-import { updatePost } from "../api/firebase";
+import { getPostDataDetail, updatePost } from "../api/firebase";
 import { useAuthContext } from "../context/AuthContext";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SubmitButton from "../components/SubmitButton";
 import Spinner from "../components/Spinner";
 import ReactQuill from "react-quill";
@@ -11,6 +11,8 @@ import "react-quill/dist/quill.snow.css";
 import ImageResize from "@looop/quill-image-resize-module-react";
 import Quill from "quill";
 import SpinnerMic from "../components/SpinnerMic";
+import { PersonalUserDataStore } from "../store/store";
+import { useQuery } from "@tanstack/react-query";
 Quill.register("modules/ImageResize", ImageResize);
 
 export default function UpdatePost() {
@@ -19,17 +21,22 @@ export default function UpdatePost() {
   const [isUploading, setIsUploading] = useState(false);
   const [imageLoding, setImageLoding] = useState(false);
   const { user } = useAuthContext();
+  const personal = PersonalUserDataStore((state) => state.personal);
   const navigate = useNavigate();
+  const param = useParams().postId;
 
   const quillRef = useRef();
 
-  const {
-    state: { post },
-  } = useLocation();
+  const { data: post } = useQuery(
+    ["postDetail", param],
+    async () => await getPostDataDetail(param)
+  );
 
   useEffect(() => {
-    setPostInfo(post);
-    setText(post.text);
+    if (post) {
+      setPostInfo(post);
+      setText(post.text);
+    }
   }, [post]);
 
   // 에디터 덱스트
@@ -67,14 +74,14 @@ export default function UpdatePost() {
   // 수정하기
   const upDate = (e) => {
     e.preventDefault();
-    if (post.userInfo.userUid === user.uid) {
+    if (post.userInfo.userUid === personal.userUid) {
       if (text === "") {
         alert("본문을 입력해주세요.");
         return false;
       } else {
         setIsUploading(true);
         const postId = post.id;
-        updatePost(text, user, postInfo, postId).finally(() => {
+        updatePost(text, personal, postInfo, postId).finally(() => {
           setIsUploading(false);
           navigate(`/post/${postId}`);
         });
@@ -150,60 +157,62 @@ export default function UpdatePost() {
 
   return (
     <>
-      <form onSubmit={upDate} className="w-11/12 mx-auto min-h-screen">
-        <input
-          type="text"
-          id="title"
-          className="p-4 outline-none border border-gray-300 my-1 w-full sm:text-lg dark:bg-gray-500/20 dark:text-white"
-          placeholder="제목을 입력해주세요"
-          onChange={handleChange}
-          name="title"
-          value={postInfo ? postInfo.title : post.title}
-          required
-        ></input>
-        <input
-          type="text"
-          id="author"
-          className="p-4 outline-none border border-gray-300 my-1 w-full sm:text-lg dark:bg-gray-500/20 dark:text-white"
-          placeholder={`작가(혹은 본인)를(을) 입력해주세요 ex)${user.displayName}`}
-          onChange={handleChange}
-          name="author"
-          value={postInfo ? postInfo.author : post.author}
-          required
-        ></input>
-        <select
-          name="type"
-          onChange={handleChange}
-          className="p-4 outline-none border border-gray-300 my-1 w-full  dark:bg-gray-500/20 dark:text-white"
-          value={postInfo ? postInfo.type : post.type}
-          required
-        >
-          <option value="" disabled>
-            선택하세요
-          </option>
-          <option value="recomend">추천 시</option>
-          <option value="creation">창작 시</option>
-          <option value="etc">부스러기</option>
-          {user.isAdmin && <option value="notice">공지사항</option>}
-        </select>
-        <div className="relative">
-          {imageLoding && <SpinnerMic text="댓글 다는 중..." />}
-          <ReactQuill
-            onChange={onChange}
-            modules={modules}
-            ref={quillRef}
-            defaultValue={post.text}
-          />
-        </div>
-        {isUploading && (
-          <div className="w-screen h-screen bg-black/50 fixed top-0 left-0 z-20 flex items-center justify-center">
-            <Spinner />
+      {post && (
+        <form onSubmit={upDate} className="w-11/12 mx-auto min-h-screen">
+          <input
+            type="text"
+            id="title"
+            className="p-4 outline-none border border-gray-300 my-1 w-full sm:text-lg dark:bg-gray-500/20 dark:text-white"
+            placeholder="제목을 입력해주세요"
+            onChange={handleChange}
+            name="title"
+            value={postInfo ? postInfo.title : post.title}
+            required
+          ></input>
+          <input
+            type="text"
+            id="author"
+            className="p-4 outline-none border border-gray-300 my-1 w-full sm:text-lg dark:bg-gray-500/20 dark:text-white"
+            placeholder={`작가(혹은 본인)를(을) 입력해주세요 ex)${user.displayName}`}
+            onChange={handleChange}
+            name="author"
+            value={postInfo ? postInfo.author : post.author}
+            required
+          ></input>
+          <select
+            name="type"
+            onChange={handleChange}
+            className="p-4 outline-none border border-gray-300 my-1 w-full  dark:bg-gray-500/20 dark:text-white"
+            value={postInfo ? postInfo.type : post.type}
+            required
+          >
+            <option value="" disabled>
+              선택하세요
+            </option>
+            <option value="recomend">추천 시</option>
+            <option value="creation">창작 시</option>
+            <option value="etc">부스러기</option>
+            {user.isAdmin && <option value="notice">공지사항</option>}
+          </select>
+          <div className="relative">
+            {imageLoding && <SpinnerMic text="댓글 다는 중..." />}
+            <ReactQuill
+              onChange={onChange}
+              modules={modules}
+              ref={quillRef}
+              defaultValue={post.text}
+            />
           </div>
-        )}
-        <div className="mt-4 flex">
-          <SubmitButton text="글 작성" />
-        </div>
-      </form>
+          {isUploading && (
+            <div className="w-screen h-screen bg-black/50 fixed top-0 left-0 z-20 flex items-center justify-center">
+              <Spinner />
+            </div>
+          )}
+          <div className="mt-4 flex">
+            <SubmitButton text="글 작성" />
+          </div>
+        </form>
+      )}
     </>
   );
 }

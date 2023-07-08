@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { formatAgo } from "../util/timeago";
 import { AiOutlineEye, AiTwotoneHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
-import { GoPrimitiveDot } from "react-icons/go";
+import { BsDot } from "react-icons/bs`";
 import { useAuthContext } from "../context/AuthContext";
 import { useModalStore } from "../store/store";
 import { upView } from "../api/firebase";
@@ -11,7 +11,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function PostCard({
   post,
-  post: { id, userInfo, title, type, createdAt, author },
+  post: { id, userInfo, title, createdAt, author },
 }) {
   const navigate = useNavigate();
   const { user } = useAuthContext();
@@ -91,7 +91,7 @@ export default function PostCard({
             post.userInfo.userUid === user.uid &&
             post.readCheck === false ? (
               <div className="text-amber-400 text-2xl">
-                <GoPrimitiveDot />
+                <BsDot />
               </div>
             ) : null}
           </small>

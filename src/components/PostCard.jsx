@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { formatAgo } from "../util/timeago";
 import { AiOutlineEye, AiTwotoneHeart } from "react-icons/ai";
 import { BiCommentDetail } from "react-icons/bi";
-import { BsDot } from "react-icons/bs`";
+import { BsDot } from "react-icons/bs";
 import { useAuthContext } from "../context/AuthContext";
 import { useModalStore } from "../store/store";
 import { upView } from "../api/firebase";

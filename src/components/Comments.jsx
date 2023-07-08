@@ -9,7 +9,6 @@ export default function Comments() {
   const { data: comments } = useQuery(["comments", param], () =>
     getComments(param)
   );
-  // console.log(comments);
   return (
     <>
       {comments && (
